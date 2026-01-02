@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParabuFlix</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- NETFLIX DARK THEME --- */
+        body {
+            background-color: #141414;
+            color: white;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* --- HEADER --- */
+        .navbar {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7) 10%, transparent);
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+        }
+        .logo {
+            font-family: 'Bebas Neue', cursive;
+            color: #e50914;
+            font-size: 2.5rem;
+            margin-right: 20px;
+            letter-spacing: 2px;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 70vh;
+            width: 100%;
+            position: relative;
+            background-image: url('assets/memories/m1.jpg'); 
+            background-size: cover;
+            background-position: center;
+        }
+        .hero::after {
+            /* soft vignette for cinematic feel */
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top, transparent 20%, rgba(0,0,0,0.5) 70%);
+            pointer-events: none;
+        }
+        .hero-gradient {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 55%;
+            background: linear-gradient(to top, #141414 5%, rgba(20,20,20,0.7), transparent);
+        }
+        .hero-content {
+            position: absolute;
+            bottom: 20%;
+            left: 20px;
+            max-width: 90%;
+            animation: fadeUp 0.9s ease-out forwards;
+            opacity: 0;
+        }
+        .hero-title {
+            font-family: 'Bebas Neue';
+            font-size: 4rem;
+            margin: 0 0 5px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            letter-spacing: 2px;
+        }
+        .hero-desc {
+            font-size: 1.1rem;
+            max-width: 80%;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px black;
+            color: #e5e5e5;
+        }
+        .play-btn {
+            background: white;
+            color: black;
+            border: none;
+            padding: 10px 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, color 0.15s ease;
+        }
+        .play-btn span {
+            font-size: 1.2rem;
+        }
+        .play-btn:hover {
+            transform: scale(1.04);
+            box-shadow: 0 6px 22px rgba(0,0,0,0.7);
+        }
+        .play-btn:active {
+            transform: scale(0.97);
+            background: #e5e5e5;
+        }
+
+        /* --- ROWS (The Rolling Album) --- */
+        .row {
+            margin-top: 20px;
+            padding: 20px 0 10px 20px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
+        }
+        .row-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .row-posters {
+            display: flex;
+            overflow-y: hidden;
+            overflow-x: scroll;
+            padding: 10px 0 20px;
+            scroll-behavior: smooth;
+        }
+        .row-posters::-webkit-scrollbar { display: none; }
+
+        .poster {
+            width: 150px;
+            max-height: 250px;
+            object-fit: cover;
+            margin-right: 15px;
+            border-radius: 5px;
+            transition: transform 300ms ease, box-shadow 300ms ease, opacity 200ms ease;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+        .poster:hover {
+            transform: scale(1.08);
+            opacity: 1;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.8);
+        }
+        .poster-large {
+            width: 250px;
+            max-height: 350px;
+        }
+
+        /* --- MODAL (Full Screen View) --- */
+        #modal {
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            opacity: 0; 
+            pointer-events: none; 
+            transition: opacity 0.3s;
+        }
+        #modal-img { 
+            max-width: 90%; 
+            max-height: 80%; 
+            border-radius: 10px; 
+            box-shadow: 0 0 25px rgba(255,255,255,0.18); 
+        }
+        .close-btn { 
+            position: absolute; 
+            top: 20px; 
+            right: 30px; 
+            color: white; 
+            font-size: 2rem; 
+            cursor: pointer; 
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.8rem;
+            }
+            .hero-desc {
+                font-size: 0.95rem;
+                max-width: 90%;
+            }
+            .poster-large {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="logo">PARABUFLIX</div>
+    </div>
+
+    <header class="hero">
+        <div class="hero-gradient"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Our Story</h1>
+            <p class="hero-desc">Season 2025 • 100% drama, comfort, and your pretty face in every frame.</p>
+            <button class="play-btn" onclick="scrollToMemories()">
+                <span>▶</span> Play Memories
+            </button>
+        </div>
+    </header>
+
+    <div id="rows-start"></div>
+
+    <div class="row">
+        <h2 class="row-title">Blockbuster Hits 🎬</h2>
+        <div class="row-posters">
+            <img class="poster poster-large" src="assets/memories/m1.jpg" onclick="openModal(this)">
+            <img class="poster poster-large" src="assets/memories/m2.jpg" onclick="openModal(this)">
+            <img class="poster poster-large" src="assets/memories/m3.jpg" onclick="openModal(this)">
+            <img class="poster poster-large" src="assets/memories/dia.jpg" onclick="openModal(this)">
+            <img class="poster poster-large" src="assets/memories/saree.jpg" onclick="openModal(this)">
+        </div>
+    </div>
+
+    <div class="row">
+        <h2 class="row-title">Food Diaries 🍔</h2>
+        <div class="row-posters">
+            <img class="poster" src="assets/memories/food.jpeg" onclick="openModal(this)">
+            <img class="poster" src="assets/memories/m1.jpeg" onclick="openModal(this)"> 
+            <img class="poster" src="assets/memories/m2.jpeg" onclick="openModal(this)">
+        </div>
+    </div>
+
+    <div class="row">
+        <h2 class="row-title">Because You're Pretty ❤️</h2>
+        <div class="row-posters">
+            <img class="poster" src="assets/memories/m4.jpeg" onclick="openModal(this)">
+            
+            <img class="poster" src="assets/memories/m3.jpeg" onclick="openModal(this)">
+            <img class="poster" src="assets/memories/m1.jpeg" onclick="openModal(this)">
+        </div>
+    </div>
+
+    <div id="modal" onclick="closeModal()">
+        <div class="close-btn">&times;</div>
+        <img id="modal-img" src="">
+    </div>
+
+    <script>
+        const modal = document.getElementById('modal');
+        const modalImg = document.getElementById('modal-img');
+
+        function openModal(element) {
+            modal.style.opacity = 1;
+            modal.style.pointerEvents = 'all';
+            modalImg.src = element.src;
+        }
+
+        function closeModal() {
+            modal.style.opacity = 0;
+            modal.style.pointerEvents = 'none';
+        }
+
+        function scrollToMemories() {
+            const target = document.getElementById('rows-start');
+            if (target && target.scrollIntoView) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>For Parabu ❤️</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-deep: #2c3e50;
+            --bg-main: #a3c5e0;
+            --bg-soft: #f1dbb6;
+            --accent: #f0a3b0;
+            --accent-strong: #ff7675;
+            --green-soft: #7d9b5f;
+            --text-box: rgba(255, 255, 255, 0.96);
+            --name-tag-him: #0984e3;
+            --name-tag-her: #d63031;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            background: radial-gradient(circle at top, var(--bg-main), var(--bg-deep));
+            font-family: 'Quicksand', sans-serif;
+            color: #2d3436;
+        }
+
+        #app {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        /* BACKGROUND */
+        .bg-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+            transition: opacity 2s ease, filter 2s ease;
+            opacity: 0.85;
+            filter: saturate(1.1);
+        }
+
+        /* CHARACTER STAGE */
+        .char-stage {
+            position: absolute;
+            bottom: 23vh;           /* moved UP so box doesn’t hide them */
+            width: 100%;
+            height: 58vh;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .character {
+            max-height: 100%;
+            max-width: 48%;
+            opacity: 0;
+            transform-origin: bottom center;
+            transition:
+                opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+                transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            image-rendering: auto;
+
+            /* STRONGER bottom fade so dialogue box can overlap without looking bad */
+            -webkit-mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
+            mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
+        }
+
+        .pos-left {
+            position: absolute;
+            left: -2%;
+            bottom: 0;
+        }
+
+        .pos-left-center {
+            position: absolute;
+            left: 6%;
+            bottom: 0;
+        }
+
+        .pos-right {
+            position: absolute;
+            right: 4%;
+            bottom: 0;
+        }
+
+        .bounce {
+            animation: bounce 1.5s infinite;
+        }
+        .shake {
+            animation: shake 0.45s;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            50% { transform: translateX(4px); }
+            75% { transform: translateX(-3px); }
+            100% { transform: translateX(0); }
+        }
+
+        /* DIALOGUE BOX + REWIND */
+        #dialogue-box {
+            width: 92%;
+            max-width: 520px;
+            min-height: 140px;
+            background: var(--text-box);
+            border-radius: 22px;
+            margin-bottom: 18px;
+            padding: 26px 24px 14px;
+            position: relative;
+            z-index: 20;
+            box-shadow: 0 14px 45px rgba(0,0,0,0.25);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 1s ease, transform 0.8s ease;
+        }
+
+        #dialogue-box.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #name-tag {
+            position: absolute;
+            top: -18px;
+            left: 20px;
+            color: white;
+            padding: 4px 18px;
+            border-radius: 14px;
+            font-family: 'Patrick Hand', cursive;
+            font-size: 1.25rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            letter-spacing: 0.5px;
+        }
+
+        #typing-text {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #2d3436;
+            margin: 0;
+            font-weight: 500;
+            min-height: 3.4em;
+        }
+
+        #options-area {
+            display: flex;
+            gap: 10px;
+            margin-top: 14px;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: #ffffff;
+            border: 2px solid var(--accent-strong);
+            color: var(--accent-strong);
+            padding: 10px 10px;
+            border-radius: 16px;
+            font-weight: bold;
+            flex: 1 1 auto;
+            text-align: center;
+            font-family: 'Patrick Hand', cursive;
+            font-size: 1.05rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease, color 0.12s ease;
+            cursor: pointer;
+        }
+
+        .btn:active {
+            background: var(--accent-strong);
+            color: white;
+            transform: scale(0.96);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        /* SMALL REWIND BUTTON */
+        #rewind-btn {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            font-family: 'Patrick Hand', cursive;
+            font-size: 0.95rem;
+            background: rgba(255,255,255,0.8);
+            color: #2d3436;
+            border-radius: 20px;
+            padding: 3px 10px;
+            cursor: pointer;
+            border: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        #rewind-btn span {
+            font-size: 0.95rem;
+        }
+
+        /* MEMORY POLAROID – CAPTION ABOVE IMAGE */
+        #memory-container {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            width: 80%;
+            max-width: 380px;
+            z-index: 5;
+            opacity: 0;
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        #memory-container.visible {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        #memory-container.hidden-up {
+            opacity: 0;
+            transform: translateX(-50%) translateY(-25px);
+        }
+
+        .memory-frame {
+            background: linear-gradient(180deg, #fdf7ec, #f7e3c8);
+            padding: 14px 14px 20px;
+            border-radius: 10px;
+            box-shadow: 0 18px 45px rgba(0,0,0,0.45);
+        }
+
+        .memory-caption {
+            font-family: 'Patrick Hand', cursive;
+            font-size: 1.1rem;
+            color: #5c4b43;
+            text-align: center;
+            margin-bottom: 8px; /* CAPTION ABOVE */
+        }
+
+        .memory-photo {
+            width: 100%;
+            border: 6px solid #fffdf8;
+            border-radius: 5px;
+            background: #fdf7ec;
+        }
+
+        /* OVERLAY INTRO */
+        #overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top, #34495e, #000000);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            transition: opacity 1s ease;
+            text-align: center;
+            padding: 0 30px;
+        }
+
+        #overlay h1 {
+            font-family: 'Patrick Hand', cursive;
+            font-size: 2.6rem;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        #overlay p {
+            font-size: 1rem;
+            opacity: 0.85;
+        }
+
+        #overlay small {
+            margin-top: 26px;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        .birthday-title {
+            color: #d63031;
+            text-align: center;
+            font-family: 'Patrick Hand', cursive;
+            font-size: 1.65rem;
+            margin: 0;
+        }
+
+        #confetti-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        @media (min-width: 768px) {
+            #dialogue-box {
+                max-width: 560px;
+            }
+            .char-stage {
+                bottom: 20vh;
+                height: 60vh;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- AUDIO -->
+<audio id="bgm-intro" loop>
+    <source src="assets/music/bgm-intro.mp3" type="audio/mpeg">
+</audio>
+<audio id="bgm-memory" loop>
+    <source src="assets/music/bgm-memory.mp3" type="audio/mpeg">
+</audio>
+<audio id="bgm-party" loop>
+    <source src="assets/music/bgm-party.mp3" type="audio/mpeg">
+</audio>
+
+<!-- INTRO OVERLAY -->
+<div id="overlay">
+    <h1>Hey Parabu...</h1>
+    <p>Turn on the volume 🔊</p>
+    <small>(Tap anywhere to step into our little movie)</small>
+</div>
+
+<div id="app">
+    <div id="bg-main" class="bg-layer"
+         style="background-image: url('assets/backgrounds/bg-intro.png');"></div>
+
+    <!-- MEMORY POLAROID -->
+    <div id="memory-container" class="hidden-up">
+        <div class="memory-frame">
+            <div id="memory-caption" class="memory-caption"></div>
+            <img id="memory-img" class="memory-photo" src="" alt="Memory">
+        </div>
+    </div>
+
+    <!-- CHARACTER STAGE -->
+    <div class="char-stage">
+        <img id="char-him" class="character" src="" alt="Parabha">
+        <img id="char-her" class="character" src="" alt="Parabu">
+    </div>
+
+    <!-- DIALOGUE BOX -->
+    <div id="dialogue-box">
+        <div id="name-tag">Name</div>
+        <div id="rewind-btn" onclick="rewindOneStep(event)">
+            <span>⏪</span> back
+        </div>
+        <p id="typing-text"></p>
+        <div id="options-area"></div>
+    </div>
+
+    <!-- CONFETTI -->
+    <canvas id="confetti-canvas"></canvas>
+</div>
+
+<script>
+    // ========= ASSETS (POINT THESE TO YOUR pngs) =========
+    const ASSETS = {
+        him: {
+            peek:    { src: "assets/characters/parabha/peek.png",   scale: 1.05, css: "pos-left" },
+            smile:   { src: "assets/characters/parabha/smile.png",  scale: 0.95, css: "pos-left-center" },
+            teasing: { src: "assets/characters/parabha/teasing.png",scale: 0.95, css: "pos-left-center" },
+            hug:     { src: "assets/characters/parabha/hug.png",    scale: 1.0,  css: "pos-left-center" }
+        },
+        her: {
+            suspicious: { src: "assets/characters/parabu/suspicious.png",       scale: 0.9,  css: "pos-right" },
+            laugh:      { src: "assets/characters/parabu/smile.png",    scale: 0.95, css: "pos-right" },
+            angry:      { src: "assets/characters/parabu/angry.png",      scale: 0.9,  css: "pos-right" },
+            emotional:  { src: "assets/characters/parabu/emotional.png",  scale: 1.0,  css: "pos-right" },
+            shy:        { src: "assets/characters/parabu/shy.png",      scale: 0.96, css: "pos-right" }
+        },
+        memories: {
+            food:  { src: "assets/memories/food.png",  caption: "All the food, all the teasing, and every \"one last bite\" lie." },
+            dia:   { src: "assets/memories/DIA.png",   caption: "The night we watched \"DIA\" and pretended we were fine… we weren’t." },
+            saree: { src: "assets/memories/saree.png", caption: "You in a saree, like you walked straight out of a dream." }
+        },
+        backgrounds: {
+            intro:  "assets/backgrounds/bg-intro.png",
+            memory: "assets/backgrounds/bg-memory.png",
+            party:  "assets/backgrounds/bg-party.png"
+        }
+    };
+
+    const SPEED = { typing: 70, readPause: 1300 };
+
+    const ui = {
+        box: document.getElementById('dialogue-box'),
+        text: document.getElementById('typing-text'),
+        name: document.getElementById('name-tag'),
+        options: document.getElementById('options-area'),
+        him: document.getElementById('char-him'),
+        her: document.getElementById('char-her'),
+        bg: document.getElementById('bg-main'),
+        memCont: document.getElementById('memory-container'),
+        memImg: document.getElementById('memory-img'),
+        memCaption: document.getElementById('memory-caption')
+    };
+
+    let currentAudio = null;
+
+    // ======= STORY HISTORY FOR REWIND =======
+    const historyStack = [];
+    function pushHistory(fn) {
+        historyStack.push(fn);
+    }
+
+    function rewindOneStep(event) {
+        event.stopPropagation();
+        if (historyStack.length <= 1) return;
+        historyStack.pop();
+        const last = historyStack[historyStack.length - 1];
+        if (last) last();
+    }
+
+    // ======= HELPERS =======
+    function playMusic(id) {
+        if (currentAudio) {
+            currentAudio.pause();
+            currentAudio.currentTime = 0;
+        }
+        if (!id) {
+            currentAudio = null;
+            return;
+        }
+        const audio = document.getElementById(id);
+        if (audio) {
+            audio.currentTime = 0;
+            audio.volume = 0.6;
+            const p = audio.play();
+            if (p && p.catch) p.catch(() => {});
+            currentAudio = audio;
+        }
+    }
+
+    function wait(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    function updateChar(who, mood, animClass = "") {
+        const img = who === 'him' ? ui.him : ui.her;
+        const data = who === 'him' ? ASSETS.him[mood] : ASSETS.her[mood];
+        if (!data) return;
+
+        img.style.opacity = '0';
+        setTimeout(() => {
+            img.src = data.src;
+            img.className = `character ${data.css} ${animClass}`;
+            img.style.transform = `scale(${data.scale})`;
+            img.style.opacity = '1';
+        }, 160);
+    }
+
+    function hideChar(who) {
+        const img = who === 'him' ? ui.him : ui.her;
+        img.style.opacity = '0';
+    }
+
+    async function speak(who, text) {
+        ui.box.classList.add('visible');
+        ui.options.innerHTML = '';
+
+        ui.name.style.display = 'block';
+        ui.name.style.backgroundColor = who === 'Parabha'
+            ? 'var(--name-tag-him)'
+            : 'var(--name-tag-her)';
+        ui.name.textContent = who;
+
+        ui.text.innerHTML = '';
+
+        for (let char of text) {
+            ui.text.innerHTML += char;
+            let delay = SPEED.typing + Math.random() * 20;
+            if (char === '.' || char === ',' || char === '…') delay += 160;
+            await wait(delay);
+        }
+        await wait(SPEED.readPause);
+    }
+
+    function ask(buttons) {
+        ui.options.innerHTML = '';
+        buttons.forEach(btn => {
+            const b = document.createElement('div');
+            b.className = 'btn';
+            b.innerText = btn.text;
+            b.onclick = () => {
+                ui.options.innerHTML = '';
+                btn.action();
+            };
+            ui.options.appendChild(b);
+        });
+    }
+
+    function changeBackground(key, targetOpacity = 0.8) {
+        ui.bg.style.opacity = 0;
+        setTimeout(() => {
+            ui.bg.style.backgroundImage = `url('${ASSETS.backgrounds[key]}')`;
+            ui.bg.style.opacity = targetOpacity;
+        }, 900);
+    }
+
+    async function showMemory(key, tiltDeg) {
+        const mem = ASSETS.memories[key];
+        if (!mem) return;
+        ui.memImg.src = mem.src;
+        ui.memCaption.textContent = mem.caption;
+        ui.memCont.style.transform =
+            `translateX(-50%) translateY(-10px) rotate(${tiltDeg}deg)`;
+        await wait(40);
+        ui.memCont.classList.remove('hidden-up');
+        ui.memCont.classList.add('visible');
+    }
+
+    async function hideMemory() {
+        ui.memCont.classList.remove('visible');
+        ui.memCont.classList.add('hidden-up');
+        await wait(700);
+    }
+
+    // ======= STORY FLOW =======
+    function startStory() {
+        const overlay = document.getElementById('overlay');
+        overlay.style.opacity = 0;
+        overlay.style.pointerEvents = 'none';
+        setTimeout(() => overlay.remove(), 1000);
+        scene1();
+    }
+
+    async function scene1() {
+        pushHistory(scene1);
+        playMusic('bgm-intro');
+        ui.box.classList.add('visible');
+
+        await wait(800);
+        updateChar('him', 'peek');
+        await wait(1500);
+
+        await speak('Parabha', "Psst...");
+        await speak('Parabha', "Parabu... can you hear me?");
+
+        updateChar('her', 'suspicious');
+        await wait(600);
+        await speak('Parabu', "Why are you whispering like a horror movie extra?");
+
+        ask([{ text: "Step out already 🙄", action: scene2 }]);
+    }
+
+    async function scene2() {
+        pushHistory(scene2);
+        updateChar('him', 'smile');
+        updateChar('her', 'suspicious');
+
+        await wait(500);
+        await speak('Parabha', "I was thinking about us...");
+        await speak('Parabha', "How we went from strangers to \"are you even normal?\" level comfort.");
+
+        ask([
+            { text: "You ruined my peace 😤", action: () => scene2Choice(false) },
+            { text: "You made life better (a little) 😌", action: () => scene2Choice(true) }
+        ]);
+    }
+
+    async function scene2Choice(isSoft) {
+        pushHistory(() => scene2Choice(isSoft));
+        if (isSoft) {
+            updateChar('her', 'laugh', 'bounce');
+            await speak('Parabu', "Okay fine, life is more dramatic now... but in a strangely nice way.");
+            updateChar('him', 'teasing');
+            await speak('Parabha', "See? You’re welcome for the entertainment package.");
+        } else {
+            updateChar('her', 'angry', 'shake');
+            if (navigator.vibrate) navigator.vibrate(160);
+            await speak('Parabu', "Exactly. I had peace. Then you entered like a glitch in my system.");
+            updateChar('him', 'teasing');
+            await speak('Parabha', "And yet, you never uninstalled me.");
+        }
+
+        updateChar('her', 'suspicious');
+        await speak('Parabu', "Fine. What are you really up to?");
+        await wait(700);
+        scene3();
+    }
+
+    async function scene3() {
+        pushHistory(scene3);
+        playMusic('bgm-memory');
+        changeBackground('memory', 0.65);
+
+        await wait(1800);
+
+        // FOOD
+        updateChar('him', 'smile');
+        updateChar('her', 'laugh', 'bounce');
+        await showMemory('food', -3);
+        await speak('Parabha', "First, all those food moments...");
+        await speak('Parabu', "You stealing my fries and then blaming me for over-eating.");
+        await wait(400);
+        await hideMemory();
+
+        // DIA
+        await wait(500);
+        updateChar('her', 'emotional');
+        await showMemory('dia', 2.5);
+        await speak('Parabha', "Then the day we watched \"DIA\" together.");
+        await speak('Parabha', "You acted strong, but your silence after the movie said everything.");
+        await speak('Parabu', "That movie hit way too close to the heart.");
+        await wait(700);
+        await hideMemory();
+
+        // SAREE
+        await wait(600);
+        updateChar('her', 'shy');
+        await showMemory('saree', -4);
+        await speak('Parabha', "And then there’s you in a saree.");
+        await speak('Parabha', "For a second everything went quiet… like the world forgot to breathe.");
+        await wait(500);
+        await speak('Parabu', "Stop. Don’t make me emotional and shy at the same time.");
+        await wait(1200);
+        await hideMemory();
+
+        scene4();
+    }
+
+    async function scene4() {
+        pushHistory(scene4);
+        playMusic(null);
+
+        updateChar('him', 'smile');
+        updateChar('her', 'emotional');
+        await speak('Parabha', "Somewhere along the way, you went from \"just a friend\" to \"my favorite person\".");
+
+        await wait(400);
+        hideChar('him');
+        await wait(900);
+
+        await speak('Parabu', "Parabha?");
+        updateChar('her', 'emotional');
+        await speak('Parabu', "Hey... why does it suddenly feel quiet?");
+        await speak('Parabu', "Come back. This story doesn’t work without you.");
+
+        ask([{ text: "SURPRISE 🎉", action: scene5 }]);
+    }
+
+    async function scene5() {
+        pushHistory(scene5);
+        playMusic('bgm-party');
+        changeBackground('party', 0.9);
+        startConfetti();
+
+        await wait(500);
+        updateChar('him', 'hug');
+        updateChar('her', 'laugh', 'bounce');
+
+        ui.name.style.display = 'none';
+        ui.text.innerHTML = "<h2 class='birthday-title'>🎂 HAPPY BIRTHDAY PARABU 🎉</h2>";
+        await wait(3500);
+
+        ui.name.style.display = 'block';
+        await speak('Parabha', "Thank you for existing exactly the way you do. Flaws, chaos, laughter and all.");
+        await speak('Parabha', "You’re not just a chapter in my life, you’re the plot twist I never saw coming.");
+
+        updateChar('her', 'shy');
+        await speak('Parabu', "You know this is going to be my favorite kind of memory, right? The kind made of us.");
+
+        ask([
+            {
+                text: "Okay, now Netflix? 🍿",
+                action: () => window.location.href = "netflix.html"
+            }
+        ]);
+    }
+
+    // ======= CONFETTI =======
+    function startConfetti() {
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        const colors = ['#fab1a0', '#74b9ff', '#fdcb6e', '#ffeaa7', '#e84393'];
+        const pieces = [];
+        const total = 160;
+
+        for (let i = 0; i < total; i++) {
+            pieces.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                r: Math.random() * 6 + 3,
+                d: Math.random() * 0.7 + 0.4,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                tilt: Math.random() * 10 - 10,
+                tiltAngleIncrement: Math.random() * 0.08 + 0.02,
+                tiltAngle: 0
+            });
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            pieces.forEach(p => {
+                ctx.beginPath();
+                ctx.fillStyle = p.color;
+                ctx.ellipse(
+                    p.x + p.tilt,
+                    p.y,
+                    p.r,
+                    p.r * 0.6,
+                    Math.PI / 4,
+                    0,
+                    2 * Math.PI
+                );
+                ctx.fill();
+            });
+            update();
+            requestAnimationFrame(draw);
+        }
+
+        function update() {
+            pieces.forEach(p => {
+                p.tiltAngle += p.tiltAngleIncrement;
+                p.y += (Math.cos(p.d) + 3 + p.r / 2) * 0.9;
+                p.x += Math.sin(p.d) * 0.7;
+                p.tilt = Math.sin(p.tiltAngle) * 12;
+
+                if (p.y > canvas.height + 20) {
+                    p.y = -20;
+                    p.x = Math.random() * canvas.width;
+                }
+            });
+        }
+
+        draw();
+    }
+
+    // ======= INIT =======
+    document.getElementById('overlay').addEventListener('click', startStory);
+</script>
+</body>
+</html>
