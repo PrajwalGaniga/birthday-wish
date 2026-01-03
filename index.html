@@ -50,6 +50,43 @@
             align-items: center;
         }
 
+        /* PARTICLE HEARTS BACKGROUND */
+        .floating-hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .heart-particle {
+            position: absolute;
+            color: rgba(255, 182, 193, 0.4);
+            font-size: 1.5rem;
+            animation: floatHeart 15s infinite ease-in-out;
+            opacity: 0;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(-20vh) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
         /* BACKGROUND */
         .bg-layer {
             position: absolute;
@@ -59,13 +96,13 @@
             height: 100%;
             background-size: cover;
             background-position: center;
-            z-index: -1;
+            z-index: 2;
             transition: opacity 2s ease, filter 2s ease;
             opacity: 0.85;
             filter: saturate(1.1);
         }
 
-        /* CHARACTER STAGE - ADJUSTED FOR BETTER VISIBILITY */
+        /* CHARACTER STAGE */
         .char-stage {
             position: absolute;
             bottom: 25vh;
@@ -93,7 +130,6 @@
             mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
         }
 
-        /* Character speaking states */
         .character.speaking {
             filter: brightness(1.08) drop-shadow(0 0 8px var(--glow-shadow));
             transform: scale(1.02);
@@ -139,7 +175,7 @@
             100% { transform: translateX(0); }
         }
 
-        /* DIALOGUE BOX - MOVED UP HIGHER */
+        /* DIALOGUE BOX */
         #dialogue-box {
             width: 92%;
             max-width: 520px;
@@ -187,37 +223,143 @@
             min-height: 3.4em;
         }
 
-        #options-area {
-            display: flex;
-            gap: 10px;
-            margin-top: 14px;
-            width: 100%;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            background: #ffffff;
-            border: 2px solid var(--accent-strong);
-            color: var(--accent-strong);
-            padding: 10px 10px;
-            border-radius: 16px;
-            font-weight: 700;
-            flex: 1 1 auto;
-            text-align: center;
+        /* PULSE INDICATOR */
+        .tap-indicator {
+            position: absolute;
+            bottom: -45px;
+            left: 50%;
+            transform: translateX(-50%);
             font-family: 'Nunito', sans-serif;
-            font-size: 1.02rem;
-            letter-spacing: 0.03em;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease, color 0.12s ease;
-            cursor: pointer;
-            opacity: 0.95;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: pulse 2s infinite;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
 
-        .btn:active {
-            background: var(--accent-strong);
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.05); }
+        }
+
+        /* CENTER MODAL FOR CHOICES */
+        #choice-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        #choice-modal.visible {
+            display: flex;
+            opacity: 1;
+        }
+
+        .choice-container {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 30px;
+            padding: 30px 25px;
+            max-width: 90%;
+            width: 420px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+            transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(0.5) rotate(-5deg);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .choice-question {
+            font-family: 'Patrick Hand', cursive;
+            font-size: 1.5rem;
+            color: #2d3436;
+            text-align: center;
+            margin-bottom: 25px;
+            line-height: 1.4;
+            text-shadow: 0 2px 4px rgba(255,255,255,0.5);
+        }
+
+        .choice-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .choice-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            transform: scale(0.96);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            border: none;
+            padding: 18px 20px;
+            border-radius: 20px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        .choice-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.6);
+        }
+
+        .choice-btn:active {
+            transform: translateY(-1px) scale(0.98);
+            box-shadow: 0 6px 15px rgba(102, 126, 234, 0.5);
+        }
+
+        .choice-btn:nth-child(2) {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            box-shadow: 0 8px 20px rgba(240, 147, 251, 0.4);
+        }
+
+        .choice-btn:nth-child(2):hover {
+            box-shadow: 0 12px 30px rgba(240, 147, 251, 0.6);
+        }
+
+        .choice-btn:nth-child(2):active {
+            box-shadow: 0 6px 15px rgba(240, 147, 251, 0.5);
+        }
+
+        /* SPECIAL CELEBRATION BUTTON */
+        .celebration-btn {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            animation: rainbow 3s linear infinite, glow 2s ease-in-out infinite;
+            font-size: 1.3rem !important;
+            padding: 22px 25px !important;
+        }
+
+        @keyframes rainbow {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 8px 25px rgba(250, 112, 154, 0.6); }
+            50% { box-shadow: 0 12px 40px rgba(254, 225, 64, 0.8); }
         }
 
         /* SMALL REWIND BUTTON */
@@ -238,6 +380,11 @@
             align-items: center;
             gap: 4px;
             z-index: 25;
+            transition: transform 0.2s ease;
+        }
+
+        #rewind-btn:active {
+            transform: scale(0.95);
         }
 
         #rewind-btn span { font-size: 0.9rem; }
@@ -310,12 +457,14 @@
             font-size: 2.6rem;
             margin-bottom: 10px;
             letter-spacing: 1px;
+            animation: fadeInDown 1s ease;
         }
 
         #overlay p {
             font-family: 'Nunito', sans-serif;
             font-size: 1rem;
             opacity: 0.9;
+            animation: fadeIn 1.5s ease;
         }
 
         #overlay small {
@@ -323,6 +472,23 @@
             opacity: 0.7;
             font-size: 0.9rem;
             font-family: 'Nunito', sans-serif;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 0.9; }
         }
 
         .birthday-title {
@@ -332,6 +498,13 @@
             font-size: 1.8rem;
             margin: 0;
             letter-spacing: 0.03em;
+            animation: colorChange 3s infinite;
+        }
+
+        @keyframes colorChange {
+            0%, 100% { color: #d63031; }
+            33% { color: #fdcb6e; }
+            66% { color: #e84393; }
         }
 
         #confetti-canvas {
@@ -357,7 +530,8 @@
                 min-height: 135px;
             }
             #typing-text { font-size: 1.05rem; line-height: 1.5; }
-            .btn { padding: 10px 8px; font-size: 1rem; }
+            .choice-question { font-size: 1.3rem; }
+            .choice-btn { font-size: 1.05rem; padding: 16px 18px; }
         }
 
         @media (min-width: 768px) {
@@ -373,7 +547,6 @@
     <source src="assets/music/bgm-intro.mp3" type="audio/mpeg">
 </audio>
 
-<!-- UPDATED: removed loop so it can finish fully -->
 <audio id="bgm-memory">
     <source src="assets/music/bgm-memory.mp3" type="audio/mpeg">
 </audio>
@@ -390,6 +563,9 @@
 </div>
 
 <div id="app">
+    <!-- FLOATING HEARTS -->
+    <div class="floating-hearts" id="hearts-container"></div>
+
     <div id="bg-main" class="bg-layer"
          style="background-image: url('assets/backgrounds/bg-intro.png');"></div>
 
@@ -416,7 +592,17 @@
         </div>
 
         <p id="typing-text"></p>
-        <div id="options-area"></div>
+        <div class="tap-indicator" id="tap-indicator">
+            👆 Tap anywhere to continue
+        </div>
+    </div>
+
+    <!-- CHOICE MODAL -->
+    <div id="choice-modal">
+        <div class="choice-container">
+            <div class="choice-question" id="choice-question"></div>
+            <div class="choice-buttons" id="choice-buttons"></div>
+        </div>
     </div>
 
     <!-- CONFETTI -->
@@ -440,8 +626,8 @@
             shy:        { src: "assets/characters/parabu/shy.png",        scale: 0.96, css: "pos-right" }
         },
         memories: {
-            food:  { src: "assets/memories/food.png",  caption: "All the food, all the teasing, and every \"one last bite\" lie." },
-            dia:   { src: "assets/memories/DIA.png",   caption: "The night we watched \"DIA\" and pretended we were fine… we weren’t." },
+            food:  { src: "assets/memories/food.jpeg",  caption: "All the food, all the teasing, and every \"one last bite\" lie." },
+            dia:   { src: "assets/memories/DIA.png",   caption: "The day we watched \"DIA\" and pretended we were fine… we weren't." },
             saree: { src: "assets/memories/saree.png", caption: "You in a saree, like you walked straight out of a dream." }
         },
         backgrounds: {
@@ -457,17 +643,22 @@
         box: document.getElementById('dialogue-box'),
         text: document.getElementById('typing-text'),
         name: document.getElementById('name-tag'),
-        options: document.getElementById('options-area'),
+        tapIndicator: document.getElementById('tap-indicator'),
         him: document.getElementById('char-him'),
         her: document.getElementById('char-her'),
         bg: document.getElementById('bg-main'),
         memCont: document.getElementById('memory-container'),
         memImg: document.getElementById('memory-img'),
-        memCaption: document.getElementById('memory-caption')
+        memCaption: document.getElementById('memory-caption'),
+        choiceModal: document.getElementById('choice-modal'),
+        choiceQuestion: document.getElementById('choice-question'),
+        choiceButtons: document.getElementById('choice-buttons')
     };
 
     let currentAudio = null;
     let currentSpeaker = null;
+    let waitingForTap = false;
+    let tapResolve = null;
 
     // ======= STORY HISTORY FOR REWIND =======
     const historyStack = [];
@@ -481,10 +672,22 @@
         if (last) last();
     }
 
+    // ======= FLOATING HEARTS =======
+    function createFloatingHearts() {
+        const container = document.getElementById('hearts-container');
+        for (let i = 0; i < 15; i++) {
+            const heart = document.createElement('div');
+            heart.className = 'heart-particle';
+            heart.textContent = '💕';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 15 + 's';
+            heart.style.animationDuration = (15 + Math.random() * 10) + 's';
+            container.appendChild(heart);
+        }
+    }
+
     // ======= HELPERS =======
-    // UPDATED: don't reset/restart if the same track is already playing
     function playMusic(id) {
-        // stop current only if switching to a different track
         if (currentAudio && (!id || currentAudio.id !== id)) {
             currentAudio.pause();
             currentAudio.currentTime = 0;
@@ -497,9 +700,7 @@
 
         const audio = document.getElementById(id);
         if (audio) {
-            // reset only if it's a new track
             if (currentAudio?.id !== id) audio.currentTime = 0;
-
             audio.volume = 0.6;
             const p = audio.play();
             if (p && p.catch) p.catch(() => {});
@@ -509,6 +710,23 @@
 
     function wait(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    function waitForTap() {
+        return new Promise(resolve => {
+            waitingForTap = true;
+            tapResolve = resolve;
+            ui.tapIndicator.style.display = 'flex';
+        });
+    }
+
+    function handleTap() {
+        if (waitingForTap && tapResolve) {
+            waitingForTap = false;
+            ui.tapIndicator.style.display = 'none';
+            tapResolve();
+            tapResolve = null;
+        }
     }
 
     function setSpeaking(who) {
@@ -553,7 +771,6 @@
 
     async function speak(who, text) {
         ui.box.classList.add('visible');
-        ui.options.innerHTML = '';
 
         ui.name.style.display = 'block';
         ui.name.style.backgroundColor = who === 'Parabha'
@@ -572,21 +789,29 @@
             await wait(delay);
         }
         await wait(SPEED.readPause);
+        await waitForTap();
     }
 
-    function ask(buttons) {
-        ui.options.innerHTML = '';
-        buttons.forEach(btn => {
+    function showChoiceModal(question, buttons) {
+        ui.choiceQuestion.textContent = question;
+        ui.choiceButtons.innerHTML = '';
+
+        buttons.forEach((btn, index) => {
             const b = document.createElement('div');
-            b.className = 'btn';
-            b.innerText = btn.text;
+            b.className = 'choice-btn';
+            if (btn.special) b.classList.add('celebration-btn');
+            b.textContent = btn.text;
             b.onclick = () => {
-                ui.options.innerHTML = '';
-                setSpeaking(null);
-                btn.action();
+                ui.choiceModal.classList.remove('visible');
+                setTimeout(() => {
+                    setSpeaking(null);
+                    btn.action();
+                }, 400);
             };
-            ui.options.appendChild(b);
+            ui.choiceButtons.appendChild(b);
         });
+
+        ui.choiceModal.classList.add('visible');
     }
 
     function changeBackground(key, targetOpacity = 0.8) {
@@ -640,7 +865,9 @@
         await wait(600);
         await speak('Parabu', "Why are you whispering like a horror movie extra?");
 
-        ask([{ text: "Step out already 🙄", action: scene2 }]);
+        showChoiceModal("What should Parabu say?", [
+            { text: "Step out already 🙄", action: scene2 }
+        ]);
     }
 
     async function scene2() {
@@ -652,7 +879,7 @@
         await speak('Parabha', "I was thinking about us...");
         await speak('Parabha', "How we went from strangers to \"are you even normal?\" level comfort.");
 
-        ask([
+        showChoiceModal("How does Parabu really feel?", [
             { text: "You ruined my peace 😤", action: () => scene2Choice(false) },
             { text: "You made life better (a little) 😌", action: () => scene2Choice(true) }
         ]);
@@ -736,7 +963,9 @@
         await speak('Parabu', "Hey... why does it suddenly feel quiet?");
         await speak('Parabu', "Come back. This story doesn't work without you.");
 
-        ask([{ text: "SURPRISE 🎉", action: scene5 }]);
+        showChoiceModal("Tap to reveal the surprise!", [
+            { text: "🎉 SURPRISE 🎉", action: scene5, special: true }
+        ]);
     }
 
     async function scene5() {
@@ -753,6 +982,7 @@
         ui.text.innerHTML = "<h2 class='birthday-title'>🎂 HAPPY BIRTHDAY PARABU 🎉</h2>";
         setSpeaking(null);
         await wait(3500);
+        await waitForTap();
 
         ui.name.style.display = 'block';
         await speak('Parabha', "Thank you for existing exactly the way you do. Flaws, chaos, laughter and all.");
@@ -761,10 +991,11 @@
         updateChar('her', 'shy');
         await speak('Parabu', "You know this is going to be my favorite kind of memory, right? The kind made of us.");
 
-        ask([
+        showChoiceModal("What's next?", [
             {
-                text: "Okay, now Netflix? 🍿",
-                action: () => window.location.href = "netflix.html"
+                text: "🍿 Time for Netflix!",
+                action: () => window.location.href = "netflix.html",
+                special: true
             }
         ]);
     }
@@ -837,6 +1068,9 @@
 
     // ======= INIT =======
     document.getElementById('overlay').addEventListener('click', startStory);
+    document.addEventListener('click', handleTap);
+
+    createFloatingHearts();
 
     document.addEventListener('touchstart', function(e) {
         if (e.touches.length > 1) e.preventDefault();
