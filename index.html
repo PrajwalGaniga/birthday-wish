@@ -141,10 +141,11 @@
       50% { transform: scale(1.08); }
     }
 
-    /* CHARACTER STAGE */
+    /* CHARACTER STAGE:
+       moved higher so characters sit directly behind the dialogue box */
     .char-stage {
       position: absolute;
-      bottom: 25vh;
+      bottom: 32vh;           /* was 25vh */
       width: 100%;
       height: 55vh;
       display: flex;
@@ -204,15 +205,16 @@
       100% { transform: translateX(0) scale(var(--char-scale)); }
     }
 
-    /* DIALOGUE BOX */
+    /* DIALOGUE BOX:
+       pulled up slightly so it hides the “floating” lower halves */
     #dialogue-box {
       width: 92%;
       max-width: 520px;
       min-height: 140px;
       background: var(--text-box);
       border-radius: 22px;
-      margin-bottom: 12px;
-      padding: 26px 24px 18px;
+      margin-bottom: 24px;         /* was 12px */
+      padding: 20px 24px 18px;     /* top padding reduced a bit */
       position: relative;
       z-index: 20;
       box-shadow: 0 14px 45px rgba(0,0,0,0.25);
@@ -519,7 +521,7 @@
 
     .birthday-title {
       color: #d63031;
-      text-align: center;
+      text-align: center;          /* ensure center */
       font-family: 'Pacifico', cursive;
       font-size: 1.8rem;
       margin: 0;
@@ -543,16 +545,16 @@
 
     /* MOBILE */
     @media (max-height: 700px) {
-      .char-stage { bottom: 28vh; height: 52vh; }
-      #dialogue-box { margin-bottom: 8px; min-height: 130px; }
+      .char-stage { bottom: 30vh; height: 52vh; }
+      #dialogue-box { margin-bottom: 18px; min-height: 130px; }
     }
 
     @media (max-width: 480px) {
-      .char-stage { bottom: 26vh; height: 54vh; }
+      .char-stage { bottom: 30vh; height: 54vh; }
       #dialogue-box {
         width: 94%;
-        margin-bottom: 10px;
-        padding: 22px 20px 16px;
+        margin-bottom: 20px;
+        padding: 18px 20px 16px;
         min-height: 135px;
       }
       #typing-text { font-size: 1.05rem; line-height: 1.5; }
@@ -561,8 +563,8 @@
     }
 
     @media (min-width: 768px) {
-      #dialogue-box { max-width: 560px; margin-bottom: 15px; }
-      .char-stage { bottom: 22vh; height: 58vh; }
+      #dialogue-box { max-width: 560px; margin-bottom: 28px; }
+      .char-stage { bottom: 26vh; height: 58vh; }
     }
   </style>
 </head>
@@ -701,7 +703,7 @@
     if (!loader) return;
     loader.style.opacity = 0;
     setTimeout(() => loader.remove(), 800);
-  };  // [web:19]
+  };
 
   // ======= HISTORY / REWIND =======
   const historyStack = [];
@@ -763,7 +765,7 @@
     } else {
       currentAudio = null;
     }
-  }  // [web:21][web:22]
+  }
 
   // ======= HELPERS =======
   function wait(ms) {
@@ -822,7 +824,7 @@
 
       if (currentSpeaker === who) img.classList.add('speaking');
     }, 160);
-  }  // [web:12][web:15]
+  }
 
   function hideChar(who) {
     const img = who === 'him' ? ui.him : ui.her;
@@ -852,7 +854,7 @@
     }
     await wait(SPEED.readPause);
     await waitForTap();
-  }  // [web:17][web:20]
+  }
 
   function showChoiceModal(question, buttons) {
     ui.choiceQuestion.textContent = "";
