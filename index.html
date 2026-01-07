@@ -1,1084 +1,1167 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>For Parabu ❤️</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta charset="UTF-8">
+  <title>For Parabu ❤️</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Patrick+Hand&family=Quicksand:wght@400;500;700&family=Nunito:wght@500;700&display=swap" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Patrick+Hand&family=Quicksand:wght@400;500;700&family=Nunito:wght@500;700&display=swap" rel="stylesheet">
 
-    <style>
-        :root {
-            --bg-deep: #2c3e50;
-            --bg-main: #a3c5e0;
-            --bg-soft: #f1dbb6;
-            --accent: #f0a3b0;
-            --accent-strong: #ff7675;
-            --green-soft: #7d9b5f;
-            --text-box: rgba(255, 255, 255, 0.96);
-            --name-tag-him: #0984e3;
-            --name-tag-her: #d63031;
-            --glow-shadow: rgba(255, 255, 255, 0.4);
-        }
+  <style>
+    :root {
+      --bg-deep: #2c3e50;
+      --bg-main: #a3c5e0;
+      --bg-soft: #f1dbb6;
+      --accent: #f0a3b0;
+      --accent-strong: #ff7675;
+      --green-soft: #7d9b5f;
+      --text-box: rgba(255, 255, 255, 0.96);
+      --name-tag-him: #0984e3;
+      --name-tag-her: #d63031;
+      --glow-shadow: rgba(255, 255, 255, 0.4);
+    }
 
-        * {
-            box-sizing: border-box;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-            margin: 0;
-            padding: 0;
-        }
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      margin: 0;
+      padding: 0;
+    }
 
-        body {
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-            background: radial-gradient(circle at top, var(--bg-main), var(--bg-deep));
-            font-family: 'Quicksand', sans-serif;
-            color: #2d3436;
-            touch-action: manipulation;
-        }
+    body {
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      background: radial-gradient(circle at top, var(--bg-main), var(--bg-deep));
+      font-family: 'Quicksand', sans-serif;
+      color: #2d3436;
+      touch-action: manipulation;
+      transition: background-color 0.18s ease;
+    }
 
-        #app {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
-        }
+    /* TAP FLASH */
+    body.tap-flash {
+      background: radial-gradient(circle at top, #b6d5f0, #1d2833);
+    }
 
-        /* PARTICLE HEARTS BACKGROUND */
-        .floating-hearts {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            overflow: hidden;
-        }
+    #app {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+    }
 
-        .heart-particle {
-            position: absolute;
-            color: rgba(255, 182, 193, 0.4);
-            font-size: 1.5rem;
-            animation: floatHeart 15s infinite ease-in-out;
-            opacity: 0;
-        }
+    /* LOADER */
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle, #1e272e, #000);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 200;
+      color: white;
+      font-family: 'Nunito', sans-serif;
+      transition: opacity 0.6s ease;
+    }
 
-        @keyframes floatHeart {
-            0% {
-                transform: translateY(100vh) translateX(0) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.6;
-            }
-            90% {
-                opacity: 0.4;
-            }
-            100% {
-                transform: translateY(-20vh) translateX(100px) rotate(360deg);
-                opacity: 0;
-            }
-        }
+    .loader-heart {
+      font-size: 3rem;
+      animation: beat 1s infinite;
+      margin-bottom: 12px;
+    }
 
-        /* BACKGROUND */
-        .bg-layer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            z-index: 2;
-            transition: opacity 2s ease, filter 2s ease;
-            opacity: 0.85;
-            filter: saturate(1.1);
-        }
+    #loader p {
+      font-size: 1rem;
+      opacity: 0.85;
+    }
 
-        /* CHARACTER STAGE */
-        .char-stage {
-            position: absolute;
-            bottom: 25vh;
-            width: 100%;
-            height: 55vh;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            z-index: 10;
-            pointer-events: none;
-        }
+    @keyframes beat {
+      0%,100% { transform: scale(1); }
+      50% { transform: scale(1.25); }
+    }
 
-        .character {
-            max-height: 100%;
-            max-width: 48%;
-            opacity: 0;
-            transform-origin: bottom center;
-            transition:
-                opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1),
-                transform 0.8s cubic-bezier(0.25, 1, 0.5, 1),
-                filter 0.6s ease;
-            image-rendering: auto;
-            filter: brightness(1);
-            -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
-            mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
-        }
+    /* FLOATING HEARTS */
+    .floating-hearts {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
 
-        .character.speaking {
-            filter: brightness(1.08) drop-shadow(0 0 8px var(--glow-shadow));
-            transform: scale(1.02);
-            z-index: 15;
-        }
+    .heart-particle {
+      position: absolute;
+      color: rgba(255, 182, 193, 0.4);
+      font-size: 1.5rem;
+      animation: floatHeart 15s infinite ease-in-out;
+      opacity: 0;
+    }
 
-        .character.not-speaking {
-            filter: brightness(0.92);
-            transform: scale(0.98);
-        }
+    @keyframes floatHeart {
+      0% {
+        transform: translateY(100vh) translateX(0) rotate(0deg);
+        opacity: 0;
+      }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.4; }
+      100% {
+        transform: translateY(-20vh) translateX(100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
 
-        .pos-left {
-            position: absolute;
-            left: -2%;
-            bottom: 0;
-        }
+    /* BACKGROUND LAYER */
+    .bg-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      z-index: 2;
+      transition: opacity 2s ease, filter 2s ease;
+      opacity: 0.85;
+      filter: saturate(1.1);
+      animation: slowZoom 18s ease-in-out infinite;
+    }
 
-        .pos-left-center {
-            position: absolute;
-            left: 6%;
-            bottom: 0;
-        }
+    @keyframes slowZoom {
+      0%,100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
 
-        .pos-right {
-            position: absolute;
-            right: 4%;
-            bottom: 0;
-        }
+    /* CHARACTER STAGE */
+    .char-stage {
+      position: absolute;
+      bottom: 25vh;
+      width: 100%;
+      height: 55vh;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      z-index: 10;
+      pointer-events: none;
+    }
 
-        .bounce { animation: bounce 1.5s infinite; }
-        .shake { animation: shake 0.45s; }
+    .character {
+      max-height: 100%;
+      max-width: 48%;
+      opacity: 0;
+      transform-origin: bottom center;
+      transition:
+        opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+        transform 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+        filter 0.6s ease;
+      image-rendering: auto;
+      filter: brightness(1);
+      -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+      mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+      --char-scale: 1;
+      animation: idleFloat 4s ease-in-out infinite;
+    }
 
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
+    @keyframes idleFloat {
+      0%,100% { transform: translateY(0) scale(var(--char-scale)); }
+      50% { transform: translateY(-6px) scale(var(--char-scale)); }
+    }
 
-        @keyframes shake {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-4px); }
-            50% { transform: translateX(4px); }
-            75% { transform: translateX(-3px); }
-            100% { transform: translateX(0); }
-        }
+    .character.speaking {
+      filter: brightness(1.08) drop-shadow(0 0 8px var(--glow-shadow));
+    }
 
-        /* DIALOGUE BOX */
-        #dialogue-box {
-            width: 92%;
-            max-width: 520px;
-            min-height: 140px;
-            background: var(--text-box);
-            border-radius: 22px;
-            margin-bottom: 12px;
-            padding: 26px 24px 18px;
-            position: relative;
-            z-index: 20;
-            box-shadow: 0 14px 45px rgba(0,0,0,0.25);
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 1s ease, transform 0.8s ease;
-        }
+    .character.not-speaking {
+      filter: brightness(0.92);
+    }
 
-        #dialogue-box.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    .pos-left { position: absolute; left: -2%; bottom: 0; }
+    .pos-left-center { position: absolute; left: 6%; bottom: 0; }
+    .pos-right { position: absolute; right: 4%; bottom: 0; }
 
-        #name-tag {
-            position: absolute;
-            top: -18px;
-            left: 20px;
-            color: white;
-            padding: 4px 18px;
-            border-radius: 14px;
-            font-family: 'Patrick Hand', cursive;
-            font-size: 1.25rem;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            letter-spacing: 0.5px;
-        }
+    .bounce { animation: idleFloat 4s ease-in-out infinite, bounce 1.5s infinite; }
+    .shake { animation: idleFloat 4s ease-in-out infinite, shake 0.45s; }
 
-        #typing-text {
-            font-family: 'Quicksand', sans-serif;
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: #2d3436;
-            margin: 0;
-            font-weight: 500;
-            min-height: 3.4em;
-        }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0) scale(var(--char-scale)); }
+      50% { transform: translateY(-8px) scale(var(--char-scale)); }
+    }
 
-        /* PULSE INDICATOR */
-        .tap-indicator {
-            position: absolute;
-            bottom: -45px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-family: 'Nunito', sans-serif;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.9);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            animation: pulse 2s infinite;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        }
+    @keyframes shake {
+      0% { transform: translateX(0) scale(var(--char-scale)); }
+      25% { transform: translateX(-4px) scale(var(--char-scale)); }
+      50% { transform: translateX(4px) scale(var(--char-scale)); }
+      75% { transform: translateX(-3px) scale(var(--char-scale)); }
+      100% { transform: translateX(0) scale(var(--char-scale)); }
+    }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
-            50% { opacity: 1; transform: translateX(-50%) scale(1.05); }
-        }
+    /* DIALOGUE BOX */
+    #dialogue-box {
+      width: 92%;
+      max-width: 520px;
+      min-height: 140px;
+      background: var(--text-box);
+      border-radius: 22px;
+      margin-bottom: 12px;
+      padding: 26px 24px 18px;
+      position: relative;
+      z-index: 20;
+      box-shadow: 0 14px 45px rgba(0,0,0,0.25);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 1s ease, transform 0.8s ease;
+    }
 
-        /* CENTER MODAL FOR CHOICES */
-        #choice-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(8px);
-            z-index: 100;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
+    #dialogue-box.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-        #choice-modal.visible {
-            display: flex;
-            opacity: 1;
-        }
+    #name-tag {
+      position: absolute;
+      top: -18px;
+      left: 20px;
+      color: white;
+      padding: 4px 18px;
+      border-radius: 14px;
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1.25rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      letter-spacing: 0.5px;
+    }
 
-        .choice-container {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-            border-radius: 30px;
-            padding: 30px 25px;
-            max-width: 90%;
-            width: 420px;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.4);
-            transform: scale(0.8);
-            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-        }
+    #typing-text {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #2d3436;
+      margin: 0;
+      font-weight: 500;
+      min-height: 3.4em;
+    }
 
-        @keyframes popIn {
-            0% {
-                transform: scale(0.5) rotate(-5deg);
-                opacity: 0;
-            }
-            100% {
-                transform: scale(1) rotate(0deg);
-                opacity: 1;
-            }
-        }
+    .tap-indicator {
+      position: absolute;
+      bottom: -45px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.9);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      animation: pulse 2s infinite;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
 
-        .choice-question {
-            font-family: 'Patrick Hand', cursive;
-            font-size: 1.5rem;
-            color: #2d3436;
-            text-align: center;
-            margin-bottom: 25px;
-            line-height: 1.4;
-            text-shadow: 0 2px 4px rgba(255,255,255,0.5);
-        }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+      50% { opacity: 1; transform: translateX(-50%) scale(1.05); }
+    }
 
-        .choice-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
+    /* CHOICE MODAL */
+    #choice-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
 
-        .choice-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 18px 20px;
-            border-radius: 20px;
-            font-family: 'Nunito', sans-serif;
-            font-size: 1.15rem;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
-            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            text-align: center;
-            letter-spacing: 0.5px;
-        }
+    #choice-modal.visible {
+      display: flex;
+      opacity: 1;
+    }
 
-        .choice-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.6);
-        }
+    .choice-container {
+      background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+      border-radius: 30px;
+      padding: 30px 25px;
+      max-width: 90%;
+      width: 420px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+      transform: scale(0.8);
+      animation: popIn 0.5s cubic-bezier(0.68,-0.55,0.265,1.55) forwards;
+    }
 
-        .choice-btn:active {
-            transform: translateY(-1px) scale(0.98);
-            box-shadow: 0 6px 15px rgba(102, 126, 234, 0.5);
-        }
+    @keyframes popIn {
+      0% {
+        transform: scale(0.5) rotate(-5deg);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+      }
+    }
 
-        .choice-btn:nth-child(2) {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            box-shadow: 0 8px 20px rgba(240, 147, 251, 0.4);
-        }
+    .choice-question {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1.5rem;
+      color: #2d3436;
+      text-align: center;
+      margin-bottom: 25px;
+      line-height: 1.4;
+      text-shadow: 0 2px 4px rgba(255,255,255,0.5);
+    }
 
-        .choice-btn:nth-child(2):hover {
-            box-shadow: 0 12px 30px rgba(240, 147, 251, 0.6);
-        }
+    .choice-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
 
-        .choice-btn:nth-child(2):active {
-            box-shadow: 0 6px 15px rgba(240, 147, 251, 0.5);
-        }
+    .choice-btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 18px 20px;
+      border-radius: 20px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+      transition: all 0.3s cubic-bezier(0.68,-0.55,0.265,1.55);
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
 
-        /* SPECIAL CELEBRATION BUTTON */
-        .celebration-btn {
-            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-            animation: rainbow 3s linear infinite, glow 2s ease-in-out infinite;
-            font-size: 1.3rem !important;
-            padding: 22px 25px !important;
-        }
+    .choice-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(102, 126, 234, 0.6);
+    }
 
-        @keyframes rainbow {
-            0% { filter: hue-rotate(0deg); }
-            100% { filter: hue-rotate(360deg); }
-        }
+    .choice-btn:active {
+      transform: translateY(-1px) scale(0.98);
+      box-shadow: 0 6px 15px rgba(102, 126, 234, 0.5);
+    }
 
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 8px 25px rgba(250, 112, 154, 0.6); }
-            50% { box-shadow: 0 12px 40px rgba(254, 225, 64, 0.8); }
-        }
+    .choice-btn:nth-child(2) {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      box-shadow: 0 8px 20px rgba(240, 147, 251, 0.4);
+    }
 
-        /* SMALL REWIND BUTTON */
-        #rewind-btn {
-            position: absolute;
-            right: 16px;
-            bottom: 12px;
-            font-family: 'Nunito', sans-serif;
-            font-size: 0.9rem;
-            background: rgba(255,255,255,0.9);
-            color: #2d3436;
-            border-radius: 999px;
-            padding: 4px 11px 5px;
-            cursor: pointer;
-            border: 1px solid rgba(0,0,0,0.08);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            z-index: 25;
-            transition: transform 0.2s ease;
-        }
+    .choice-btn:nth-child(2):hover {
+      box-shadow: 0 12px 30px rgba(240, 147, 251, 0.6);
+    }
 
-        #rewind-btn:active {
-            transform: scale(0.95);
-        }
+    .choice-btn:nth-child(2):active {
+      box-shadow: 0 6px 15px rgba(240, 147, 251, 0.5);
+    }
 
-        #rewind-btn span { font-size: 0.9rem; }
+    .celebration-btn {
+      background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+      animation: rainbow 3s linear infinite, glow 2s ease-in-out infinite;
+      font-size: 1.3rem !important;
+      padding: 22px 25px !important;
+    }
 
-        /* MEMORY POLAROID */
-        #memory-container {
-            position: absolute;
-            top: 10%;
-            left: 50%;
-            transform: translateX(-50%) translateY(-10px);
-            width: 80%;
-            max-width: 380px;
-            z-index: 5;
-            opacity: 0;
-            transition: opacity 1s ease, transform 1s ease;
-        }
+    @keyframes rainbow {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
 
-        #memory-container.visible {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
+    @keyframes glow {
+      0%, 100% { box-shadow: 0 8px 25px rgba(250, 112, 154, 0.6); }
+      50% { box-shadow: 0 12px 40px rgba(254, 225, 64, 0.8); }
+    }
 
-        #memory-container.hidden-up {
-            opacity: 0;
-            transform: translateX(-50%) translateY(-25px);
-        }
+    /* REWIND BUTTON */
+    #rewind-btn {
+      position: absolute;
+      right: 16px;
+      bottom: 12px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.9rem;
+      background: rgba(255,255,255,0.9);
+      color: #2d3436;
+      border-radius: 999px;
+      padding: 4px 11px 5px;
+      cursor: pointer;
+      border: 1px solid rgba(0,0,0,0.08);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      z-index: 25;
+      transition: transform 0.2s ease;
+    }
 
-        .memory-frame {
-            background: linear-gradient(180deg, #fdf7ec, #f7e3c8);
-            padding: 14px 14px 20px;
-            border-radius: 10px;
-            box-shadow: 0 18px 45px rgba(0,0,0,0.45);
-        }
+    #rewind-btn:active {
+      transform: scale(0.95);
+    }
 
-        .memory-caption {
-            font-family: 'Patrick Hand', cursive;
-            font-size: 1.1rem;
-            color: #5c4b43;
-            text-align: center;
-            margin-bottom: 8px;
-        }
+    #rewind-btn span { font-size: 0.9rem; }
 
-        .memory-photo {
-            width: 100%;
-            border: 6px solid #fffdf8;
-            border-radius: 5px;
-            background: #fdf7ec;
-        }
+    /* MEMORY POLAROID */
+    #memory-container {
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-10px);
+      width: 80%;
+      max-width: 380px;
+      z-index: 5;
+      opacity: 0;
+      transition: opacity 1s ease, transform 1s ease;
+    }
 
-        /* OVERLAY INTRO */
-        #overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at top, #34495e, #000000);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            transition: opacity 1s ease;
-            text-align: center;
-            padding: 0 30px;
-        }
+    #memory-container.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
 
-        #overlay h1 {
-            font-family: 'Pacifico', cursive;
-            font-size: 2.6rem;
-            margin-bottom: 10px;
-            letter-spacing: 1px;
-            animation: fadeInDown 1s ease;
-        }
+    #memory-container.hidden-up {
+      opacity: 0;
+      transform: translateX(-50%) translateY(-25px);
+    }
 
-        #overlay p {
-            font-family: 'Nunito', sans-serif;
-            font-size: 1rem;
-            opacity: 0.9;
-            animation: fadeIn 1.5s ease;
-        }
+    .memory-frame {
+      background: linear-gradient(180deg, #fdf7ec, #f7e3c8);
+      padding: 14px 14px 20px;
+      border-radius: 10px;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.45);
+    }
 
-        #overlay small {
-            margin-top: 26px;
-            opacity: 0.7;
-            font-size: 0.9rem;
-            font-family: 'Nunito', sans-serif;
-            animation: pulse 2s infinite;
-        }
+    .memory-caption {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1.1rem;
+      color: #5c4b43;
+      text-align: center;
+      margin-bottom: 8px;
+    }
 
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    .memory-photo {
+      width: 100%;
+      border: 6px solid #fffdf8;
+      border-radius: 5px;
+      background: #fdf7ec;
+    }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 0.9; }
-        }
+    /* OVERLAY INTRO */
+    #overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at top, #34495e, #000000);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      transition: opacity 1s ease;
+      text-align: center;
+      padding: 0 30px;
+    }
 
-        .birthday-title {
-            color: #d63031;
-            text-align: center;
-            font-family: 'Pacifico', cursive;
-            font-size: 1.8rem;
-            margin: 0;
-            letter-spacing: 0.03em;
-            animation: colorChange 3s infinite;
-        }
+    #overlay h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 2.6rem;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+      animation: fadeInDown 1s ease;
+    }
 
-        @keyframes colorChange {
-            0%, 100% { color: #d63031; }
-            33% { color: #fdcb6e; }
-            66% { color: #e84393; }
-        }
+    #overlay p {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      opacity: 0.9;
+      animation: fadeIn 1.5s ease;
+    }
 
-        #confetti-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 50;
-        }
+    #overlay small {
+      margin-top: 26px;
+      opacity: 0.7;
+      font-size: 0.9rem;
+      font-family: 'Nunito', sans-serif;
+      animation: pulse 2s infinite;
+    }
 
-        /* MOBILE OPTIMIZATIONS */
-        @media (max-height: 700px) {
-            .char-stage { bottom: 28vh; height: 52vh; }
-            #dialogue-box { margin-bottom: 8px; min-height: 130px; }
-        }
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-        @media (max-width: 480px) {
-            .char-stage { bottom: 26vh; height: 54vh; }
-            #dialogue-box {
-                width: 94%;
-                margin-bottom: 10px;
-                padding: 22px 20px 16px;
-                min-height: 135px;
-            }
-            #typing-text { font-size: 1.05rem; line-height: 1.5; }
-            .choice-question { font-size: 1.3rem; }
-            .choice-btn { font-size: 1.05rem; padding: 16px 18px; }
-        }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 0.9; }
+    }
 
-        @media (min-width: 768px) {
-            #dialogue-box { max-width: 560px; margin-bottom: 15px; }
-            .char-stage { bottom: 22vh; height: 58vh; }
-        }
-    </style>
+    .birthday-title {
+      color: #d63031;
+      text-align: center;
+      font-family: 'Pacifico', cursive;
+      font-size: 1.8rem;
+      margin: 0;
+      letter-spacing: 0.03em;
+      animation: colorChange 3s infinite;
+    }
+
+    @keyframes colorChange {
+      0%, 100% { color: #d63031; }
+      33% { color: #fdcb6e; }
+      66% { color: #e84393; }
+    }
+
+    #confetti-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 50;
+    }
+
+    /* MOBILE */
+    @media (max-height: 700px) {
+      .char-stage { bottom: 28vh; height: 52vh; }
+      #dialogue-box { margin-bottom: 8px; min-height: 130px; }
+    }
+
+    @media (max-width: 480px) {
+      .char-stage { bottom: 26vh; height: 54vh; }
+      #dialogue-box {
+        width: 94%;
+        margin-bottom: 10px;
+        padding: 22px 20px 16px;
+        min-height: 135px;
+      }
+      #typing-text { font-size: 1.05rem; line-height: 1.5; }
+      .choice-question { font-size: 1.3rem; }
+      .choice-btn { font-size: 1.05rem; padding: 16px 18px; }
+    }
+
+    @media (min-width: 768px) {
+      #dialogue-box { max-width: 560px; margin-bottom: 15px; }
+      .char-stage { bottom: 22vh; height: 58vh; }
+    }
+  </style>
 </head>
 <body>
 
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-heart">❤️</div>
+  <p>Loading our story...</p>
+</div>
+
 <!-- AUDIO -->
 <audio id="bgm-intro" loop>
-    <source src="assets/music/bgm-intro.mp3" type="audio/mpeg">
+  <source src="assets/music/bgm-intro.mp3" type="audio/mpeg">
 </audio>
 
 <audio id="bgm-memory">
-    <source src="assets/music/bgm-memory.mp3" type="audio/mpeg">
+  <source src="assets/music/bgm-memory.mp3" type="audio/mpeg">
 </audio>
 
 <audio id="bgm-party" loop>
-    <source src="assets/music/bgm-party.mp3" type="audio/mpeg">
+  <source src="assets/music/bgm-party.mp3" type="audio/mpeg">
 </audio>
 
 <!-- INTRO OVERLAY -->
 <div id="overlay">
-    <h1>Hey Parabu...</h1>
-    <p>Turn on the volume 🔊</p>
-    <small>(Tap anywhere to step into our little movie)</small>
+  <h1>Hey Parabu...</h1>
+  <p>Turn on the volume 🔊</p>
+  <small>(Tap anywhere to step into our little movie)</small>
 </div>
 
 <div id="app">
-    <!-- FLOATING HEARTS -->
-    <div class="floating-hearts" id="hearts-container"></div>
+  <!-- FLOATING HEARTS -->
+  <div class="floating-hearts" id="hearts-container"></div>
 
-    <div id="bg-main" class="bg-layer"
-         style="background-image: url('assets/backgrounds/bg-intro.png');"></div>
+  <div id="bg-main" class="bg-layer"
+       style="background-image: url('assets/backgrounds/bg-intro.png');"></div>
 
-    <!-- MEMORY POLAROID -->
-    <div id="memory-container" class="hidden-up">
-        <div class="memory-frame">
-            <div id="memory-caption" class="memory-caption"></div>
-            <img id="memory-img" class="memory-photo" src="" alt="Memory">
-        </div>
+  <!-- MEMORY POLAROID -->
+  <div id="memory-container" class="hidden-up">
+    <div class="memory-frame">
+      <div id="memory-caption" class="memory-caption"></div>
+      <img id="memory-img" class="memory-photo" src="" alt="Memory">
+    </div>
+  </div>
+
+  <!-- CHARACTER STAGE -->
+  <div class="char-stage">
+    <img id="char-him" class="character" src="" alt="Parabha">
+    <img id="char-her" class="character" src="" alt="Parabu">
+  </div>
+
+  <!-- DIALOGUE BOX -->
+  <div id="dialogue-box">
+    <div id="name-tag">Name</div>
+
+    <div id="rewind-btn" onclick="rewindOneStep(event)">
+      <span>⏪</span> back
     </div>
 
-    <!-- CHARACTER STAGE -->
-    <div class="char-stage">
-        <img id="char-him" class="character" src="" alt="Parabha">
-        <img id="char-her" class="character" src="" alt="Parabu">
+    <p id="typing-text"></p>
+    <div class="tap-indicator" id="tap-indicator">
+      👆 Tap anywhere to continue
     </div>
+  </div>
 
-    <!-- DIALOGUE BOX -->
-    <div id="dialogue-box">
-        <div id="name-tag">Name</div>
-
-        <div id="rewind-btn" onclick="rewindOneStep(event)">
-            <span>⏪</span> back
-        </div>
-
-        <p id="typing-text"></p>
-        <div class="tap-indicator" id="tap-indicator">
-            👆 Tap anywhere to continue
-        </div>
+  <!-- CHOICE MODAL -->
+  <div id="choice-modal">
+    <div class="choice-container">
+      <div class="choice-question" id="choice-question"></div>
+      <div class="choice-buttons" id="choice-buttons"></div>
     </div>
+  </div>
 
-    <!-- CHOICE MODAL -->
-    <div id="choice-modal">
-        <div class="choice-container">
-            <div class="choice-question" id="choice-question"></div>
-            <div class="choice-buttons" id="choice-buttons"></div>
-        </div>
-    </div>
-
-    <!-- CONFETTI -->
-    <canvas id="confetti-canvas"></canvas>
+  <!-- CONFETTI -->
+  <canvas id="confetti-canvas"></canvas>
 </div>
 
 <script>
-    // ========= ASSETS =========
-    const ASSETS = {
-        him: {
-            peek:    { src: "assets/characters/parabha/peek.png",    scale: 1.05, css: "pos-left" },
-            smile:   { src: "assets/characters/parabha/smile.png",   scale: 0.95, css: "pos-left-center" },
-            teasing: { src: "assets/characters/parabha/teasing.png", scale: 0.95, css: "pos-left-center" },
-            hug:     { src: "assets/characters/parabha/hug.png",     scale: 1.0,  css: "pos-left-center" }
-        },
-        her: {
-            suspicious: { src: "assets/characters/parabu/suspicious.png", scale: 0.9,  css: "pos-right" },
-            laugh:      { src: "assets/characters/parabu/smile.png",      scale: 0.95, css: "pos-right" },
-            angry:      { src: "assets/characters/parabu/angry.png",      scale: 0.9,  css: "pos-right" },
-            emotional:  { src: "assets/characters/parabu/emotional.png",  scale: 1.0,  css: "pos-right" },
-            shy:        { src: "assets/characters/parabu/shy.png",        scale: 0.96, css: "pos-right" }
-        },
-        memories: {
-            food:  { src: "assets/memories/food.jpeg",  caption: "All the food, all the teasing, and every \"one last bite\" lie." },
-            dia:   { src: "assets/memories/DIA.png",   caption: "The day we watched \"DIA\" and pretended we were fine… we weren't." },
-            saree: { src: "assets/memories/saree.png", caption: "You in a saree, like you walked straight out of a dream." }
-        },
-        backgrounds: {
-            intro:  "assets/backgrounds/bg-intro.png",
-            memory: "assets/backgrounds/bg-memory.png",
-            party:  "assets/backgrounds/bg-party.png"
+  // ========= ASSETS =========
+  const ASSETS = {
+    him: {
+      peek:    { src: "assets/characters/parabha/peek.png",    scale: 1.18, css: "pos-left" },
+      smile:   { src: "assets/characters/parabha/smile.png",   scale: 1.12, css: "pos-left-center" },
+      teasing: { src: "assets/characters/parabha/teasing.png", scale: 1.12, css: "pos-left-center" },
+      hug:     { src: "assets/characters/parabha/hug.png",     scale: 1.15, css: "pos-left-center" }
+    },
+    her: {
+      suspicious: { src: "assets/characters/parabu/suspicious.png", scale: 1.08, css: "pos-right" },
+      laugh:      { src: "assets/characters/parabu/smile.png",      scale: 1.1,  css: "pos-right" },
+      angry:      { src: "assets/characters/parabu/angry.png",      scale: 1.08, css: "pos-right" },
+      emotional:  { src: "assets/characters/parabu/emotional.png",  scale: 1.12, css: "pos-right" },
+      shy:        { src: "assets/characters/parabu/shy.png",        scale: 1.1,  css: "pos-right" }
+    },
+    memories: {
+      food:  { src: "assets/memories/food.jpeg",  caption: "All the food, all the teasing, and every \"one last bite\" lie. 😂" },
+      dia:   { src: "assets/memories/DIA.png",    caption: "That DIA day. Silent credits but loud feelings." },
+      saree: { src: "assets/memories/saree.png",  caption: "You in a saree = main character energy only." }
+    },
+    backgrounds: {
+      intro:  "assets/backgrounds/bg-intro.png",
+      memory: "assets/backgrounds/bg-memory.png",
+      party:  "assets/backgrounds/bg-party.png"
+    }
+  };
+
+  const SPEED = {
+    typing: 42,
+    readPause: 700
+  };
+
+  const ui = {
+    box: document.getElementById('dialogue-box'),
+    text: document.getElementById('typing-text'),
+    name: document.getElementById('name-tag'),
+    tapIndicator: document.getElementById('tap-indicator'),
+    him: document.getElementById('char-him'),
+    her: document.getElementById('char-her'),
+    bg: document.getElementById('bg-main'),
+    memCont: document.getElementById('memory-container'),
+    memImg: document.getElementById('memory-img'),
+    memCaption: document.getElementById('memory-caption'),
+    choiceModal: document.getElementById('choice-modal'),
+    choiceQuestion: document.getElementById('choice-question'),
+    choiceButtons: document.getElementById('choice-buttons')
+  };
+
+  let currentAudio = null;
+  let currentSpeaker = null;
+  let waitingForTap = false;
+  let tapResolve = null;
+
+  // ======= LOADER HIDE =======
+  window.onload = () => {
+    const loader = document.getElementById('loader');
+    if (!loader) return;
+    loader.style.opacity = 0;
+    setTimeout(() => loader.remove(), 800);
+  };  // [web:19]
+
+  // ======= HISTORY / REWIND =======
+  const historyStack = [];
+  function pushHistory(fn) { historyStack.push(fn); }
+
+  function rewindOneStep(event) {
+    event.stopPropagation();
+    if (historyStack.length <= 1) return;
+    historyStack.pop();
+    const last = historyStack[historyStack.length - 1];
+    if (last) last();
+  }
+
+  // ======= FLOATING HEARTS =======
+  function createFloatingHearts() {
+    const container = document.getElementById('hearts-container');
+    for (let i = 0; i < 15; i++) {
+      const heart = document.createElement('div');
+      heart.className = 'heart-particle';
+      heart.textContent = '💕';
+      heart.style.left = Math.random() * 100 + '%';
+      heart.style.animationDelay = Math.random() * 15 + 's';
+      heart.style.animationDuration = (15 + Math.random() * 10) + 's';
+      container.appendChild(heart);
+    }
+  }
+
+  // ======= MUSIC CROSS-FADE =======
+  function playMusic(id) {
+    const newAudio = id ? document.getElementById(id) : null;
+
+    if (currentAudio && newAudio && currentAudio !== newAudio) {
+      let v = currentAudio.volume;
+      const oldRef = currentAudio;
+      const fadeOut = setInterval(() => {
+        v -= 0.05;
+        if (!oldRef) { clearInterval(fadeOut); return; }
+        oldRef.volume = Math.max(v, 0);
+        if (v <= 0) {
+          oldRef.pause();
+          clearInterval(fadeOut);
         }
-    };
-
-    const SPEED = { typing: 70, readPause: 1300 };
-
-    const ui = {
-        box: document.getElementById('dialogue-box'),
-        text: document.getElementById('typing-text'),
-        name: document.getElementById('name-tag'),
-        tapIndicator: document.getElementById('tap-indicator'),
-        him: document.getElementById('char-him'),
-        her: document.getElementById('char-her'),
-        bg: document.getElementById('bg-main'),
-        memCont: document.getElementById('memory-container'),
-        memImg: document.getElementById('memory-img'),
-        memCaption: document.getElementById('memory-caption'),
-        choiceModal: document.getElementById('choice-modal'),
-        choiceQuestion: document.getElementById('choice-question'),
-        choiceButtons: document.getElementById('choice-buttons')
-    };
-
-    let currentAudio = null;
-    let currentSpeaker = null;
-    let waitingForTap = false;
-    let tapResolve = null;
-
-    // ======= STORY HISTORY FOR REWIND =======
-    const historyStack = [];
-    function pushHistory(fn) { historyStack.push(fn); }
-
-    function rewindOneStep(event) {
-        event.stopPropagation();
-        if (historyStack.length <= 1) return;
-        historyStack.pop();
-        const last = historyStack[historyStack.length - 1];
-        if (last) last();
+      }, 80);
+    } else if (currentAudio && !newAudio) {
+      currentAudio.pause();
     }
 
-    // ======= FLOATING HEARTS =======
-    function createFloatingHearts() {
-        const container = document.getElementById('hearts-container');
-        for (let i = 0; i < 15; i++) {
-            const heart = document.createElement('div');
-            heart.className = 'heart-particle';
-            heart.textContent = '💕';
-            heart.style.left = Math.random() * 100 + '%';
-            heart.style.animationDelay = Math.random() * 15 + 's';
-            heart.style.animationDuration = (15 + Math.random() * 10) + 's';
-            container.appendChild(heart);
-        }
+    if (newAudio) {
+      newAudio.volume = 0;
+      if (currentAudio?.id !== id) newAudio.currentTime = 0;
+      newAudio.play().catch(()=>{});
+      let v = 0;
+      const fadeIn = setInterval(() => {
+        v += 0.05;
+        newAudio.volume = Math.min(v, 0.6);
+        if (v >= 0.6) clearInterval(fadeIn);
+      }, 80);
+      currentAudio = newAudio;
+    } else {
+      currentAudio = null;
     }
+  }  // [web:21][web:22]
 
-    // ======= HELPERS =======
-    function playMusic(id) {
-        if (currentAudio && (!id || currentAudio.id !== id)) {
-            currentAudio.pause();
-            currentAudio.currentTime = 0;
-        }
+  // ======= HELPERS =======
+  function wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
-        if (!id) {
-            currentAudio = null;
-            return;
-        }
-
-        const audio = document.getElementById(id);
-        if (audio) {
-            if (currentAudio?.id !== id) audio.currentTime = 0;
-            audio.volume = 0.6;
-            const p = audio.play();
-            if (p && p.catch) p.catch(() => {});
-            currentAudio = audio;
-        }
-    }
-
-    function wait(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-    function waitForTap() {
-        return new Promise(resolve => {
-            waitingForTap = true;
-            tapResolve = resolve;
-            ui.tapIndicator.style.display = 'flex';
-        });
-    }
-
-    function handleTap() {
-        if (waitingForTap && tapResolve) {
-            waitingForTap = false;
-            ui.tapIndicator.style.display = 'none';
-            tapResolve();
-            tapResolve = null;
-        }
-    }
-
-    function setSpeaking(who) {
-        ui.him.classList.remove('speaking', 'not-speaking');
-        ui.her.classList.remove('speaking', 'not-speaking');
-
-        if (who === 'him') {
-            ui.him.classList.add('speaking');
-            ui.her.classList.add('not-speaking');
-            currentSpeaker = 'him';
-        } else if (who === 'her') {
-            ui.her.classList.add('speaking');
-            ui.him.classList.add('not-speaking');
-            currentSpeaker = 'her';
-        } else {
-            currentSpeaker = null;
-        }
-    }
-
-    function updateChar(who, mood, animClass = "") {
-        const img = who === 'him' ? ui.him : ui.her;
-        const data = who === 'him' ? ASSETS.him[mood] : ASSETS.her[mood];
-        if (!data) return;
-
-        img.style.opacity = '0';
-        setTimeout(() => {
-            img.src = data.src;
-            img.className = `character ${data.css}`;
-            if (animClass) img.classList.add(animClass);
-            img.style.transform = `scale(${data.scale})`;
-            img.style.opacity = '1';
-
-            if (currentSpeaker === who) img.classList.add('speaking');
-        }, 160);
-    }
-
-    function hideChar(who) {
-        const img = who === 'him' ? ui.him : ui.her;
-        img.style.opacity = '0';
-        img.classList.remove('speaking', 'not-speaking');
-    }
-
-    async function speak(who, text) {
-        ui.box.classList.add('visible');
-
-        ui.name.style.display = 'block';
-        ui.name.style.backgroundColor = who === 'Parabha'
-            ? 'var(--name-tag-him)'
-            : 'var(--name-tag-her)';
-        ui.name.textContent = who;
-
-        setSpeaking(who === 'Parabha' ? 'him' : 'her');
-
-        ui.text.innerHTML = '';
-
-        for (let char of text) {
-            ui.text.innerHTML += char;
-            let delay = SPEED.typing + Math.random() * 20;
-            if (char === '.' || char === ',' || char === '…') delay += 160;
-            await wait(delay);
-        }
-        await wait(SPEED.readPause);
-        await waitForTap();
-    }
-
-    function showChoiceModal(question, buttons) {
-        ui.choiceQuestion.textContent = question;
-        ui.choiceButtons.innerHTML = '';
-
-        buttons.forEach((btn, index) => {
-            const b = document.createElement('div');
-            b.className = 'choice-btn';
-            if (btn.special) b.classList.add('celebration-btn');
-            b.textContent = btn.text;
-            b.onclick = () => {
-                ui.choiceModal.classList.remove('visible');
-                setTimeout(() => {
-                    setSpeaking(null);
-                    btn.action();
-                }, 400);
-            };
-            ui.choiceButtons.appendChild(b);
-        });
-
-        ui.choiceModal.classList.add('visible');
-    }
-
-    function changeBackground(key, targetOpacity = 0.8) {
-        ui.bg.style.opacity = 0;
-        setTimeout(() => {
-            ui.bg.style.backgroundImage = `url('${ASSETS.backgrounds[key]}')`;
-            ui.bg.style.opacity = targetOpacity;
-        }, 900);
-    }
-
-    async function showMemory(key, tiltDeg) {
-        const mem = ASSETS.memories[key];
-        if (!mem) return;
-        ui.memImg.src = mem.src;
-        ui.memCaption.textContent = mem.caption;
-        ui.memCont.style.transform =
-            `translateX(-50%) translateY(-10px) rotate(${tiltDeg}deg)`;
-        await wait(40);
-        ui.memCont.classList.remove('hidden-up');
-        ui.memCont.classList.add('visible');
-    }
-
-    async function hideMemory() {
-        ui.memCont.classList.remove('visible');
-        ui.memCont.classList.add('hidden-up');
-        await wait(700);
-    }
-
-    // ======= STORY FLOW =======
-    function startStory() {
-        const overlay = document.getElementById('overlay');
-        overlay.style.opacity = 0;
-        overlay.style.pointerEvents = 'none';
-        setTimeout(() => overlay.remove(), 1000);
-        scene1();
-    }
-
-    async function scene1() {
-        pushHistory(scene1);
-        playMusic('bgm-intro');
-        ui.box.classList.add('visible');
-
-        await wait(800);
-        updateChar('him', 'peek');
-        await wait(1500);
-
-        await speak('Parabha', "Psst...");
-        await speak('Parabha', "Parabu... can you hear me?");
-
-        updateChar('her', 'suspicious');
-        await wait(600);
-        await speak('Parabu', "Why are you whispering like a horror movie extra?");
-
-        showChoiceModal("What should Parabu say?", [
-            { text: "Step out already 🙄", action: scene2 }
-        ]);
-    }
-
-    async function scene2() {
-        pushHistory(scene2);
-        updateChar('him', 'smile');
-        updateChar('her', 'suspicious');
-
-        await wait(500);
-        await speak('Parabha', "I was thinking about us...");
-        await speak('Parabha', "How we went from strangers to \"are you even normal?\" level comfort.");
-
-        showChoiceModal("How does Parabu really feel?", [
-            { text: "You ruined my peace 😤", action: () => scene2Choice(false) },
-            { text: "You made life better (a little) 😌", action: () => scene2Choice(true) }
-        ]);
-    }
-
-    async function scene2Choice(isSoft) {
-        pushHistory(() => scene2Choice(isSoft));
-        if (isSoft) {
-            updateChar('her', 'laugh', 'bounce');
-            await speak('Parabu', "Okay fine, life is more dramatic now... but in a strangely nice way.");
-            updateChar('him', 'teasing');
-            await speak('Parabha', "See? You're welcome for the entertainment package.");
-        } else {
-            updateChar('her', 'angry', 'shake');
-            if (navigator.vibrate) navigator.vibrate(160);
-            await speak('Parabu', "Exactly. I had peace. Then you entered like a glitch in my system.");
-            updateChar('him', 'teasing');
-            await speak('Parabha', "And yet, you never uninstalled me.");
-        }
-
-        updateChar('her', 'suspicious');
-        await speak('Parabu', "Fine. What are you really up to?");
-        await wait(700);
-        scene3();
-    }
-
-    async function scene3() {
-        pushHistory(scene3);
-        playMusic('bgm-memory');
-        changeBackground('memory', 0.65);
-
-        await wait(1800);
-
-        // FOOD
-        updateChar('him', 'smile');
-        updateChar('her', 'laugh', 'bounce');
-        await showMemory('food', -3);
-        await speak('Parabha', "First, all those food moments...");
-        await speak('Parabu', "You stealing my fries and then blaming me for over-eating.");
-        await wait(400);
-        await hideMemory();
-
-        // DIA
-        await wait(500);
-        updateChar('her', 'emotional');
-        await showMemory('dia', 2.5);
-        await speak('Parabha', "Then the day we watched \"DIA\" together.");
-        await speak('Parabha', "You acted strong, but your silence after the movie said everything.");
-        await speak('Parabu', "That movie hit way too close to the heart.");
-        await wait(700);
-        await hideMemory();
-
-        // SAREE
-        await wait(600);
-        updateChar('her', 'shy');
-        await showMemory('saree', -4);
-        await speak('Parabha', "And then there's you in a saree.");
-        await speak('Parabha', "For a second everything went quiet… like the world forgot to breathe.");
-        await wait(500);
-        await speak('Parabu', "Stop. Don't make me emotional and shy at the same time.");
-        await wait(1200);
-        await hideMemory();
-
-        scene4();
-    }
-
-    async function scene4() {
-        pushHistory(scene4);
-        playMusic(null);
-
-        updateChar('him', 'smile');
-        updateChar('her', 'emotional');
-        await speak('Parabha', "Somewhere along the way, you went from \"just a friend\" to \"my favorite person\".");
-
-        await wait(400);
-        hideChar('him');
-        await wait(900);
-
-        await speak('Parabu', "Parabha?");
-        updateChar('her', 'emotional');
-        await speak('Parabu', "Hey... why does it suddenly feel quiet?");
-        await speak('Parabu', "Come back. This story doesn't work without you.");
-
-        showChoiceModal("Tap to reveal the surprise!", [
-            { text: "🎉 SURPRISE 🎉", action: scene5, special: true }
-        ]);
-    }
-
-    async function scene5() {
-        pushHistory(scene5);
-        playMusic('bgm-party');
-        changeBackground('party', 0.9);
-        startConfetti();
-
-        await wait(500);
-        updateChar('him', 'hug');
-        updateChar('her', 'laugh', 'bounce');
-
-        ui.name.style.display = 'none';
-        ui.text.innerHTML = "<h2 class='birthday-title'>🎂 HAPPY BIRTHDAY PARABU 🎉</h2>";
-        setSpeaking(null);
-        await wait(3500);
-        await waitForTap();
-
-        ui.name.style.display = 'block';
-        await speak('Parabha', "Thank you for existing exactly the way you do. Flaws, chaos, laughter and all.");
-        await speak('Parabha', "You're not just a chapter in my life, you're the plot twist I never saw coming.");
-
-        updateChar('her', 'shy');
-        await speak('Parabu', "You know this is going to be my favorite kind of memory, right? The kind made of us.");
-
-        showChoiceModal("What's next?", [
-            {
-                text: "🍿 Time for Netflix!",
-                action: () => window.location.href = "netflix.html",
-                special: true
-            }
-        ]);
-    }
-
-    // ======= CONFETTI =======
-    function startConfetti() {
-        const canvas = document.getElementById('confetti-canvas');
-        const ctx = canvas.getContext('2d');
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        resize();
-        window.addEventListener('resize', resize);
-
-        const colors = ['#fab1a0', '#74b9ff', '#fdcb6e', '#ffeaa7', '#e84393'];
-        const pieces = [];
-        const total = 160;
-
-        for (let i = 0; i < total; i++) {
-            pieces.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height - canvas.height,
-                r: Math.random() * 6 + 3,
-                d: Math.random() * 0.7 + 0.4,
-                color: colors[Math.floor(Math.random() * colors.length)],
-                tilt: Math.random() * 10 - 10,
-                tiltAngleIncrement: Math.random() * 0.08 + 0.02,
-                tiltAngle: 0
-            });
-        }
-
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            pieces.forEach(p => {
-                ctx.beginPath();
-                ctx.fillStyle = p.color;
-                ctx.ellipse(
-                    p.x + p.tilt,
-                    p.y,
-                    p.r,
-                    p.r * 0.6,
-                    Math.PI / 4,
-                    0,
-                    2 * Math.PI
-                );
-                ctx.fill();
-            });
-            update();
-            requestAnimationFrame(draw);
-        }
-
-        function update() {
-            pieces.forEach(p => {
-                p.tiltAngle += p.tiltAngleIncrement;
-                p.y += (Math.cos(p.d) + 3 + p.r / 2) * 0.9;
-                p.x += Math.sin(p.d) * 0.7;
-                p.tilt = Math.sin(p.tiltAngle) * 12;
-
-                if (p.y > canvas.height + 20) {
-                    p.y = -20;
-                    p.x = Math.random() * canvas.width;
-                }
-            });
-        }
-
-        draw();
-    }
-
-    // ======= INIT =======
-    document.getElementById('overlay').addEventListener('click', startStory);
-    document.addEventListener('click', handleTap);
-
-    createFloatingHearts();
-
-    document.addEventListener('touchstart', function(e) {
-        if (e.touches.length > 1) e.preventDefault();
-    }, { passive: false });
-
-    document.addEventListener('contextmenu', function(e) {
-        e.preventDefault();
+  function waitForTap() {
+    return new Promise(resolve => {
+      waitingForTap = true;
+      tapResolve = resolve;
+      ui.tapIndicator.style.display = 'flex';
     });
+  }
+
+  function handleTap() {
+    document.body.classList.add('tap-flash');
+    setTimeout(() => document.body.classList.remove('tap-flash'), 150);
+
+    if (waitingForTap && tapResolve) {
+      waitingForTap = false;
+      ui.tapIndicator.style.display = 'none';
+      tapResolve();
+      tapResolve = null;
+    }
+  }
+
+  function setSpeaking(who) {
+    ui.him.classList.remove('speaking', 'not-speaking');
+    ui.her.classList.remove('speaking', 'not-speaking');
+
+    if (who === 'him') {
+      ui.him.classList.add('speaking');
+      ui.her.classList.add('not-speaking');
+      currentSpeaker = 'him';
+    } else if (who === 'her') {
+      ui.her.classList.add('speaking');
+      ui.him.classList.add('not-speaking');
+      currentSpeaker = 'her';
+    } else {
+      currentSpeaker = null;
+    }
+  }
+
+  function updateChar(who, mood, animClass = "") {
+    const img = who === 'him' ? ui.him : ui.her;
+    const data = who === 'him' ? ASSETS.him[mood] : ASSETS.her[mood];
+    if (!data) return;
+
+    img.style.opacity = '0';
+    setTimeout(() => {
+      img.src = data.src;
+      img.className = `character ${data.css}`;
+      if (animClass) img.classList.add(animClass);
+      img.style.setProperty('--char-scale', data.scale);
+      img.style.opacity = '1';
+
+      if (currentSpeaker === who) img.classList.add('speaking');
+    }, 160);
+  }  // [web:12][web:15]
+
+  function hideChar(who) {
+    const img = who === 'him' ? ui.him : ui.her;
+    img.style.opacity = '0';
+    img.classList.remove('speaking', 'not-speaking');
+  }
+
+  async function speak(who, text) {
+    ui.box.classList.add('visible');
+
+    ui.name.style.display = 'block';
+    ui.name.style.backgroundColor = who === 'Parabha'
+      ? 'var(--name-tag-him)'
+      : 'var(--name-tag-her)';
+    ui.name.textContent = who;
+
+    setSpeaking(who === 'Parabha' ? 'him' : 'her');
+
+    ui.text.innerHTML = '';
+
+    for (let char of text) {
+      ui.text.innerHTML += char;
+      let delay = SPEED.typing + Math.random() * 25;
+      if (char === '.' || char === '…') delay += 120;
+      if (char === ',') delay += 80;
+      await wait(delay);
+    }
+    await wait(SPEED.readPause);
+    await waitForTap();
+  }  // [web:17][web:20]
+
+  function showChoiceModal(question, buttons) {
+    ui.choiceQuestion.textContent = "";
+    ui.choiceButtons.innerHTML = "";
+
+    setTimeout(() => {
+      ui.choiceModal.classList.add('visible');
+
+      (async () => {
+        for (let c of question) {
+          ui.choiceQuestion.textContent += c;
+          await wait(26);
+        }
+      })();
+    }, 400);
+
+    buttons.forEach((btn) => {
+      const b = document.createElement('div');
+      b.className = 'choice-btn';
+      if (btn.special) b.classList.add('celebration-btn');
+      b.textContent = btn.text;
+      b.onclick = () => {
+        ui.choiceModal.classList.remove('visible');
+        setTimeout(() => {
+          setSpeaking(null);
+          btn.action();
+        }, 400);
+      };
+      ui.choiceButtons.appendChild(b);
+    });
+  }
+
+  function changeBackground(key, targetOpacity = 0.8) {
+    ui.bg.style.opacity = 0;
+    setTimeout(() => {
+      ui.bg.style.backgroundImage = `url('${ASSETS.backgrounds[key]}')`;
+      ui.bg.style.opacity = targetOpacity;
+    }, 900);
+  }
+
+  async function showMemory(key, tiltDeg) {
+    const mem = ASSETS.memories[key];
+    if (!mem) return;
+    ui.memImg.src = mem.src;
+    ui.memCaption.textContent = mem.caption;
+    ui.memCont.style.transform =
+      `translateX(-50%) translateY(-10px) rotate(${tiltDeg}deg)`;
+    await wait(40);
+    ui.memCont.classList.remove('hidden-up');
+    ui.memCont.classList.add('visible');
+  }
+
+  async function hideMemory() {
+    ui.memCont.classList.remove('visible');
+    ui.memCont.classList.add('hidden-up');
+    await wait(700);
+  }
+
+  // ======= STORY (CASUAL) =======
+  function startStory() {
+    const overlay = document.getElementById('overlay');
+    overlay.style.opacity = 0;
+    overlay.style.pointerEvents = 'none';
+    setTimeout(() => overlay.remove(), 1000);
+    scene1();
+  }
+
+  async function scene1() {
+    pushHistory(scene1);
+    playMusic('bgm-intro');
+    ui.box.classList.add('visible');
+
+    await wait(800);
+    updateChar('him', 'peek');
+    await wait(1500);
+
+    await speak('Parabha', "Hey...");
+    await speak('Parabha', "Parabu, you there? 👀");
+
+    updateChar('her', 'suspicious');
+    await wait(600);
+    await speak('Parabu', "Why are you talking like ghost movie trailer da.");
+
+    showChoiceModal("What should Parabu say?", [
+      { text: "Just come out, drama king 🙄", action: scene2 }
+    ]);
+  }
+
+  async function scene2() {
+    pushHistory(scene2);
+    updateChar('him', 'smile');
+    updateChar('her', 'suspicious');
+
+    await wait(500);
+    await speak('Parabha', "Okay okay... listen.");
+    await speak('Parabha', "You know what's funny?");
+    await speak('Parabha', "We never planned any of this.");
+    await speak('Parabha', "You just... appeared in my life and stayed. 😌");
+
+    showChoiceModal("How does Parabu reply?", [
+      { text: "You disturbed my peaceful life 😤", action: () => scene2Choice(false) },
+      { text: "Shut up, I like it 😌", action: () => scene2Choice(true) }
+    ]);
+  }
+
+  async function scene2Choice(isSoft) {
+    pushHistory(() => scene2Choice(isSoft));
+    if (isSoft) {
+      updateChar('her', 'laugh', 'bounce');
+      await speak('Parabu', "Tch... fine.");
+      await speak('Parabu', "Life is more annoying now.");
+      await speak('Parabu', "But... it's also more fun. Happy now? 🙄");
+      updateChar('him', 'teasing');
+      await speak('Parabha', "Exactly what I wanted to hear. Thank you, my favourite annoyed person.");
+    } else {
+      updateChar('her', 'angry', 'shake');
+      if (navigator.vibrate) navigator.vibrate(160);
+      await speak('Parabu', "Bro I had peace.");
+      await speak('Parabu', "Then you came like system error.");
+      updateChar('him', 'teasing');
+      await speak('Parabha', "Still... you never pressed uninstall.");
+    }
+
+    updateChar('her', 'suspicious');
+    await speak('Parabu', "Okay enough sentiment. What are you planning?");
+    await wait(700);
+    scene3();
+  }
+
+  async function scene3() {
+    pushHistory(scene3);
+    playMusic('bgm-memory');
+    changeBackground('memory', 0.65);
+
+    await wait(1800);
+
+    // FOOD
+    updateChar('him', 'smile');
+    updateChar('her', 'laugh', 'bounce');
+    await showMemory('food', -3);
+    await speak('Parabha', "First of all, food.");
+    await speak('Parabha', "All those \"share\" moments where you ate 70%. 🤨");
+    await speak('Parabu', "Hello. It's called quality check.");
+    await wait(400);
+    await hideMemory();
+
+    // DIA
+    await wait(500);
+    updateChar('her', 'emotional');
+    await showMemory('dia', 2.5);
+    await speak('Parabha', "Then that DIA day...");
+    await speak('Parabha', "Movie finished. Credits rolling. Both of us just quiet.");
+    await speak('Parabu', "That silence said too much macha.");
+    await wait(700);
+    await hideMemory();
+
+    // SAREE
+    await wait(600);
+    updateChar('her', 'shy');
+    await showMemory('saree', -4);
+    await speak('Parabha', "And then...");
+    await speak('Parabha', "You in a saree.");
+    await speak('Parabha', "Honestly? Brain stopped working for a bit.");
+    await wait(500);
+    await speak('Parabu', "Aiyo stop da, I'm already shy and smiling like idiot here.");
+    await wait(1200);
+    await hideMemory();
+
+    scene4();
+  }
+
+  async function scene4() {
+    pushHistory(scene4);
+    playMusic(null);
+
+    updateChar('him', 'smile');
+    updateChar('her', 'emotional');
+    await speak('Parabha', "Somewhere in between all this nonsense...");
+    await speak('Parabha', "You went from \"just friend\" to \"person I tell everything to\".");
+    await speak('Parabha', "Like accidentally became my safe place. No refund also.");
+
+    await wait(400);
+    hideChar('him');
+    await wait(900);
+
+    await speak('Parabu', "Hello?");
+    updateChar('her', 'emotional');
+    await speak('Parabu', "Why suddenly so quiet da.");
+    await speak('Parabu', "Don't disappear like that okay.");
+    await speak('Parabu', "This story is only nice because it's you + me.");
+
+    showChoiceModal("Ready for the main thing?", [
+      { text: "🎉 Okay, show me 🔥", action: scene5, special: true }
+    ]);
+  }
+
+  async function scene5() {
+    pushHistory(scene5);
+    playMusic('bgm-party');
+    changeBackground('party', 0.9);
+    startConfetti();
+
+    await wait(500);
+    updateChar('him', 'hug');
+    updateChar('her', 'laugh', 'bounce');
+
+    ui.name.style.display = 'none';
+    ui.text.innerHTML = "<h2 class='birthday-title'>🎂 HAPPY BIRTHDAY PARABU 🎉</h2>";
+    setSpeaking(null);
+    await wait(3500);
+    await waitForTap();
+
+    ui.name.style.display = 'block';
+    await speak('Parabha', "Thank you for existing exactly like this.");
+    await speak('Parabha', "Loud, dramatic, soft, overthinking everything, laughing at stupid memes with me.");
+    await speak('Parabha', "You are my favourite notification, basically.");
+
+    updateChar('her', 'shy');
+    await speak('Parabu', "You know this will be one of my fav memories right.");
+    await speak('Parabu', "Just us. Like this. In our own weird movie.");
+
+    showChoiceModal("What next?", [
+      {
+        text: "🍿 Take me to ParabuFlix",
+        action: () => window.location.href = "netflix.html",
+        special: true
+      }
+    ]);
+  }
+
+  // ======= CONFETTI =======
+  function startConfetti() {
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const colors = ['#fab1a0', '#74b9ff', '#fdcb6e', '#ffeaa7', '#e84393'];
+    const pieces = [];
+    const total = 160;
+
+    for (let i = 0; i < total; i++) {
+      pieces.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        r: Math.random() * 6 + 3,
+        d: Math.random() * 0.7 + 0.4,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        tilt: Math.random() * 10 - 10,
+        tiltAngleIncrement: Math.random() * 0.08 + 0.02,
+        tiltAngle: 0
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      pieces.forEach(p => {
+        ctx.beginPath();
+        ctx.fillStyle = p.color;
+        ctx.ellipse(
+          p.x + p.tilt,
+          p.y,
+          p.r,
+          p.r * 0.6,
+          Math.PI / 4,
+          0,
+          2 * Math.PI
+        );
+        ctx.fill();
+      });
+      update();
+      requestAnimationFrame(draw);
+    }
+
+    function update() {
+      pieces.forEach(p => {
+        p.tiltAngle += p.tiltAngleIncrement;
+        p.y += (Math.cos(p.d) + 3 + p.r / 2) * 0.9;
+        p.x += Math.sin(p.d) * 0.7;
+        p.tilt = Math.sin(p.tiltAngle) * 12;
+
+        if (p.y > canvas.height + 20) {
+          p.y = -20;
+          p.x = Math.random() * canvas.width;
+        }
+      });
+    }
+
+    draw();
+  }
+
+  // ======= INIT =======
+  document.getElementById('overlay').addEventListener('click', startStory);
+  document.addEventListener('click', handleTap);
+
+  createFloatingHearts();
+
+  document.addEventListener('touchstart', function(e) {
+    if (e.touches.length > 1) e.preventDefault();
+  }, { passive: false });
+
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+  });
 </script>
 </body>
 </html>
